@@ -6,12 +6,21 @@ import Container from "@mui/material/Container";
 import { FormControl, FormLabel } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
+const _ = require("lodash");
+
 function GroupCheckBox(props) {
   // const options = ["Physics", "Chemistry", "Peace", "Literature", "Biology"];
-  const options = props.options;
+  // const options = (() => {
+  //   console.log("props:", props.options);
+  //   return props.options;
+  // })();
   const legend = props.legend;
+  const options = props.options.map((option) => [
+    option,
+    _.uniqueId(legend + "-")
+  ]);
   const [states, updateStates] = useState(
-    Object.fromEntries(options.map((category) => [category, true]))
+    Object.fromEntries(options.map((category) => [category[0], true]))
   );
 
   const [boxAllChecked, updateBoxAllChecked] = useState(true);
@@ -43,7 +52,7 @@ function GroupCheckBox(props) {
     const newCategoryStates = { ...states };
     options.forEach((item) => {
       console.log(item);
-      newCategoryStates[item] = e.target.checked;
+      newCategoryStates[item[0]] = e.target.checked;
     });
     console.log("newStatus", newCategoryStates);
     updateStates(newCategoryStates);
@@ -52,7 +61,7 @@ function GroupCheckBox(props) {
   return (
     <>
       <Paper
-        elevation={10}
+        elevation={5}
         sx={{
           textAlign: "center",
           margin: "auto",
@@ -71,6 +80,7 @@ function GroupCheckBox(props) {
             <FormGroup row={true} sx={{ textAlign: "right" }}>
               <FormControlLabel /* check box "All" */
                 label="All"
+                key="All-1"
                 labelPlacement={"bottom"}
                 control={
                   <Checkbox
@@ -81,16 +91,17 @@ function GroupCheckBox(props) {
                   />
                 }
               />
-              {options.map((item) => {
+              {options.map((item, index) => {
                 return (
                   <FormControlLabel
-                    label={item}
+                    label={item[0]}
+                    key={item[1]}
                     labelPlacement={"bottom"}
                     control={
                       <Checkbox
                         onChange={handleCategoryClick}
-                        checked={states[item]}
-                        value={item}
+                        checked={states[item[0]]}
+                        value={item[0]}
                       />
                     }
                   />
