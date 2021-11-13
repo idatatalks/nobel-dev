@@ -5,11 +5,10 @@ export async function fetchData(url) {
       throw new Error(response.statusText);
     }
     let text = await response.text();
-    console.log(text);
+    // console.log(text);
     return text;
   } catch (error) {
     console.log("handleError:", error);
     throw error;
   }
-  
 }
