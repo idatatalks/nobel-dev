@@ -37,14 +37,6 @@ export const NobelScatter = (props) => {
 
   const filterTop5 = () => {
     console.log(data);
-    // const filteredData = d3.rollup(
-    //   data,
-    //   (v) => {
-    //     // console.log(v.length);
-    //     return v.length;
-    //   },
-    //   (d) => d.country
-    // );
     const filteredData = d3
       .flatGroup(data, (d) => d.country)
       .map((d, id) => {
@@ -61,7 +53,7 @@ export const NobelScatter = (props) => {
   };
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height="100%">
       <ScatterChart
         width={600}
         height={350}
@@ -80,7 +72,8 @@ export const NobelScatter = (props) => {
           dataKey="index"
           type="number"
           name="number"
-          domain={["dataMin-10", "dataMax+10"]}
+          domain={["auto", "auto"]}
+          // domain={["dataMin-10", "dataMax+10"]}
         />
         {/* <ZAxis dataKey="year" range={[64, 144]} name="year" /> */}
         <Legend />

@@ -14,16 +14,16 @@ const dataURL =
 //   "https://gist.githubusercontent.com/idatatalks/823208b5cd51f2030519284b97f1119f/raw/b971e8eb0a04d15c4b4ca25b7a81a26f9a659613/example";
 
 export const NobelApp = (props) => {
-  const [data, setData] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [{data, isLoaded}, setData] = useState({data:null, isLoaded:false});
+  // const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     console.log("first effect start");
     fetchData(dataURL)
       .then((data) => {
         console.log("data parse start");
-        setData(d3.csvParse(data, d3.autoType));
+        setData({data:d3.csvParse(data, d3.autoType), isLoaded:true});
         console.log("data parse middle before setIsLoaded");
-        setIsLoaded(true);
+        // setIsLoaded(true);
         console.log("data parse end!");
       })
       .catch((error) => console.log("out: ", error));
@@ -36,7 +36,7 @@ export const NobelApp = (props) => {
   // }, [data]);
 
   console.log("rendering!");
-  if (data === "") {
+  if (!data) {
     return <h1>Loading data, please be patient or try again!</h1>;
   }
 
