@@ -3,7 +3,7 @@ import { NobelFilter } from "./NobelFilter";
 import { fetchData } from "../dataUtil";
 import * as d3 from "d3";
 import { NobelViz } from "./NobelViz";
-import { NobelLineChart } from "./LineChart";
+import { NobelLineChart } from "./NobelLineChart";
 
 const category = ["Physics", "Chemistry", "Peace", "Literature", "Biology"];
 const gender = ["Male", "Female"];
@@ -16,54 +16,38 @@ const dataURL =
 export const NobelApp = (props) => {
   const [data, setData] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  // const [category, setCategory] = useState(null)
-
   useEffect(() => {
-    console.log("effect run only once");
+    console.log("first effect start");
     fetchData(dataURL)
       .then((data) => {
         console.log("data parse start");
         setData(d3.csvParse(data, d3.autoType));
+        console.log("data parse middle before setIsLoaded");
         setIsLoaded(true);
         console.log("data parse end!");
       })
       .catch((error) => console.log("out: ", error));
     console.log("first effect end!");
   }, []);
-
   // useEffect(() => {
-  //   console.log("d3 data:", data);
+  //   console.log("Second effect start -> d3 data:", data);
   //   if (data) setIsLoaded(true);
+  //   console.log("Second effect end!");
   // }, [data]);
 
+  console.log("rendering!");
   if (data === "") {
     return <h1>Loading data, please be patient or try again!</h1>;
   }
-  function report() {
-    console.log("loading data!");
-    return (
-      <>
-        <NobelLineChart></NobelLineChart>
-        <NobelViz data={data} isloaded={isLoaded}></NobelViz>
-        {/* <NobelFilter
-          category={category}
-          gender={gender}
-          countries={countries}
-        ></NobelFilter> */}
-      </>
-    );
-  }
 
-  return report();
-
-  // return (
-  //   <>
-  //     <NobelViz data={data} isloaded={isLoaded}></NobelViz>
-  //     {/* <NobelFilter
-  //       category={category}
-  //       gender={gender}
-  //       countries={countries}
-  //     ></NobelFilter> */}
-  //   </>
-  // );
+  return (
+    <>
+      <NobelViz data={data} isloaded={isLoaded}></NobelViz>
+      {/* <NobelFilter
+        category={category}
+        gender={gender}
+        countries={countries}
+      ></NobelFilter> */}
+    </>
+  );
 };
