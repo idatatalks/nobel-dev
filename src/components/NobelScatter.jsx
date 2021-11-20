@@ -1,5 +1,5 @@
-import { useState } from "react";
-import React, { FunctionComponent } from "react";
+import { useEffect, useState } from "react";
+import React from "react";
 import * as d3 from "d3";
 import {
   CartesianGrid,
@@ -13,7 +13,7 @@ import {
   ZAxis
 } from "recharts";
 
-const CustomizedAxisTick: FunctionComponent<any> = (props: any) => {
+const CustomizedAxisTick = (props) => {
   const { x, y, payload } = props;
 
   return (
@@ -21,6 +21,7 @@ const CustomizedAxisTick: FunctionComponent<any> = (props: any) => {
       <text
         x={0}
         y={0}
+        dx={-10}
         dy={16}
         textAnchor="end"
         fill="#666"
@@ -33,9 +34,13 @@ const CustomizedAxisTick: FunctionComponent<any> = (props: any) => {
 };
 
 export const NobelScatter = (props) => {
-  const [data, setData] = useState(props.data);
+  const [{ data, isDataMangled }, setData] = useState({
+    data: null,
+    isDataMangled: false
+  });
 
   const filterTop5 = () => {
+    const data = props.data;
     console.log(data);
     const filteredData = d3
       .flatGroup(data, (d) => d.country)
@@ -48,41 +53,59 @@ export const NobelScatter = (props) => {
       })
       .flat();
 
+    filteredData.countryNum = filteredData[filteredData.length - 1].id;
+    filteredData.countries = d3.group(data, (d) => d.country);
+    console.log("Country numbers:", filteredData.countryNum);
+    console.log("Country names:", filteredData.countries);
     console.log("filtered data:", filteredData);
+    setData({ data: filteredData, isDataMangled: true });
     return filteredData;
   };
+  const xTickNum = () => {};
+  useEffect(() => {
+    filterTop5();
+  }, []);
+
+  if (!isDataMangled) {
+    console.log("Data is NOT processed yet.");
+    return "";
+  }
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height={600}>
       <ScatterChart
         width={600}
         height={350}
-        margin={{ top: -20, right: 20, bottom: 10, left: 30 }}
+        margin={{ top: 20, right: 20, bottom: 10, left: 30 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           allowDuplicatedCategory={false}
-          dataKey="country"
-          type="category"
+          dataKey="id"
+          type="number"
           name="country"
           tick={CustomizedAxisTick}
-          angle="90"
+          angle="-90"
+          dx={10}
+          interval={0}
+          allowDataOverflow={false}
+          tickCount={data.countryNum}
+          domain={["dataMin", "dataMax"]}
         />
         <YAxis
           dataKey="index"
           type="number"
           name="number"
           domain={["auto", "auto"]}
+          dy={-20}
+          interval={0}
+          tickCount={10}
           // domain={["dataMin-10", "dataMax+10"]}
         />
         {/* <ZAxis dataKey="year" range={[64, 144]} name="year" /> */}
-        <Legend />
+        <Legend verticalAlign="top" margin={{ bottom: 100 }} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter
-          name="Top 5 Nobel Countries"
-          data={filterTop5()}
-          fill="#8884d8"
-        />
+        <Scatter name="Top 5 Nobel Countries" data={data} fill="#8884d8" />
       </ScatterChart>
     </ResponsiveContainer>
   );
