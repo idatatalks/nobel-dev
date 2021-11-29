@@ -75,7 +75,7 @@ export const NobelScatter = (props) => {
   return (
     <div
       className="ScatterPlot"
-      style={{ overflow: "scroll", width: 600, height: 400 }}
+      style={{ overflow: "auto", width: 600, height: 400 }}
     >
       {/* <FlexText
         sx={{
@@ -108,6 +108,7 @@ export const NobelScatter = (props) => {
             angle={90}
             dx={-50}
             interval={0}
+            padding={{ left: 10, right: 20 }}
             allowDataOverflow={false}
             tickCount={data.countries.length}
             domain={["dataMin", "dataMax"]}
