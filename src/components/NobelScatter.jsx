@@ -118,7 +118,8 @@ export const NobelScatter = (props) => {
             type="number"
             name="number"
             domain={["auto", "dataMax"]}
-            dy={-20}
+            dy={0}
+            padding={{ top: 10, bottom: 5 }}
             interval={0}
             tickCount={10}
             // domain={["dataMin-10", "dataMax+10"]}
@@ -134,7 +135,7 @@ export const NobelScatter = (props) => {
             name="Top 5 Nobel Countries"
             data={data}
             fill="#8884d8"
-            shape={<CustomizedScatterShape interval={horizontalGap} />}
+            shape={<CustomizedScatterShape />}
           />
         </ScatterChart>
       </ResponsiveContainer>
@@ -149,7 +150,7 @@ const CustomizedAxisTick = (props) => {
   // console.log(xlabels);
   // console.log(payload.value - 1, xlabels[payload.value - 1]);
   return (
-    <g transform={`translate(${x + 10 * index + 5},${y})`}>
+    <g transform={`translate(${x},${y})`}>
       <text
         x={0}
         y={0}
@@ -169,9 +170,7 @@ const CustomizedScatterShape = (props) => {
   const { x, y, winnerId, countryId, interval, payload } = props;
   // console.log("YYY:", props);
   return (
-    <g
-      transform={`translate(${x + (countryId - 1) * interval},${y - winnerId})`}
-    >
+    <g transform={`translate(${x},${y - winnerId})`}>
       <circle cx={5} cy={5} r={5} fill="orange" />
     </g>
   );
