@@ -3,28 +3,28 @@ import GroupCheckBox from "./GroupCheckBox";
 import SliderYear from "./SliderYear";
 
 export const NobelFilter = (props) => {
-  const { category, gender, countries } = props;
+  const { data, category, gender, countries } = props;
   return (
     <Grid container columnSpacing={2} rowSpacing={2}>
       <Grid item xs={"auto"} sm={"auto"} md={"auto"} lg={"auto"} xl={"auto"}>
         <GroupCheckBox
           legend={"Category"}
-          options={category}
-          defaultOptions={category}
+          options={data.categories}
+          defaultOptions={data.categories}
         />
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <GroupCheckBox
           legend={"Gender"}
-          options={gender}
-          defaultOptions={gender}
+          options={data.genders}
+          defaultOptions={data.genders}
         />
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <GroupCheckBox
           legend={"Country"}
-          options={countries}
-          defaultOptions={countries}
+          options={data.countries}
+          defaultOptions={data.countries.slice(0, 10)}
         />
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>

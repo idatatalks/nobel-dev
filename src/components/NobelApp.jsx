@@ -51,6 +51,7 @@ export const NobelApp = (props) => {
     <>
       {/* <NobelViz data={data} isloaded={isLoaded}></NobelViz> */}
       <NobelFilter
+        data={data}
         category={data.categories}
         gender={data.genders}
         countries={data.countries}

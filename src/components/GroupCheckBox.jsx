@@ -14,48 +14,58 @@ function GroupCheckBox(props) {
   //   console.log("props:", props.options);
   //   return props.options;
   // })();
-  const legend = props.legend;
-  const options = props.options.map((option) => [
-    option,
-    _.uniqueId(legend + "-")
-  ]);
-  const [states, updateStates] = useState(
-    Object.fromEntries(options.map((category) => [category[0], true]))
-  );
+  const { legend, options, defaultOptions } = props;
+  const localOptions = options.map((option) => ({
+    label: option,
+    isChecked: defaultOptions.includes(option),
+    id: _.uniqueId(legend + "-"),
+  }));
+  console.log("LALALA:", localOptions);
+  const [optionStates, updateOptionStates] = useState(localOptions);
 
   const [boxAllChecked, updateBoxAllChecked] = useState(true);
 
   function PrintCategory() {
-    console.log(states);
+    console.log(optionStates);
     return <div>hello wolrd</div>;
   }
 
   function indeterminate() {
-    console.log("indeterminate");
-    return (
-      Object.values(states).includes(true) &&
-      Object.values(states).includes(false)
-    );
+    console.log(optionStates);
+    const checks = optionStates.map((d) => d.isChecked);
+    console.log("indeterminate checks:", checks);
+    return checks.includes(true) && checks.includes(false);
   }
 
   function handleCategoryClick(e) {
-    const newState = {
-      ...states,
-      [e.target.value]: e.target.checked
-    };
-    updateStates(newState);
-    updateBoxAllChecked(!Object.values(newState).includes(false));
+    console.log("click->", e.target.value, ":", e.target.checked);
+    // const newState = {
+    //   ...optionStates,
+    //   [e.target.value]: e.target.checked,
+    // };
+    const newOptionStates = optionStates.slice();
+    let option = newOptionStates.find(
+      (option) => option.label == e.target.value
+    );
+    option.isChecked = e.target.checked;
+    console.log("option", option);
+    console.log("options:", newOptionStates);
+    updateOptionStates(newOptionStates);
+    updateBoxAllChecked(
+      !newOptionStates.map((option) => option.isChecked).includes(false)
+    );
+    // updateBoxAllChecked(!Object.values(newOptionStates).includes(false));
   }
 
   function handleAllClick(e) {
     updateBoxAllChecked(e.target.checked);
-    const newCategoryStates = { ...states };
-    options.forEach((item) => {
-      console.log(item);
-      newCategoryStates[item[0]] = e.target.checked;
+    const newOptionStates = optionStates.slice();
+    newOptionStates.forEach((item) => {
+      console.log("option:", item);
+      item.isChecked = e.target.checked;
     });
-    console.log("newStatus", newCategoryStates);
-    updateStates(newCategoryStates);
+    console.log("newStatus", newOptionStates);
+    updateOptionStates(newOptionStates);
   }
 
   return (
@@ -65,7 +75,7 @@ function GroupCheckBox(props) {
         sx={{
           textAlign: "center",
           margin: "auto",
-          p: 1
+          p: 1,
         }}
       >
         <Container>
@@ -73,7 +83,7 @@ function GroupCheckBox(props) {
             component="fieldset"
             sx={{
               textAlign: "center",
-              ml: "0.5"
+              ml: "0.5",
             }}
           >
             <FormLabel component="legend">{legend}</FormLabel>
@@ -91,17 +101,17 @@ function GroupCheckBox(props) {
                   />
                 }
               />
-              {options.map((item, index) => {
+              {optionStates.map((item, index) => {
                 return (
                   <FormControlLabel
-                    label={item[0]}
-                    key={item[1]}
+                    label={item.label}
+                    key={item.id}
                     labelPlacement={"bottom"}
                     control={
                       <Checkbox
                         onChange={handleCategoryClick}
-                        checked={states[item[0]]}
-                        value={item[0]}
+                        checked={item.isChecked}
+                        value={item.label}
                       />
                     }
                   />
