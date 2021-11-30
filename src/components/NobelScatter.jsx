@@ -41,7 +41,7 @@ export const NobelScatter = (props) => {
   const margins = {
     top: 20,
     right: 20,
-    bottom: 80,
+    bottom: 100,
     left: 30,
   };
   const horPaddings = { left: 10, right: 20 };
@@ -156,10 +156,11 @@ export const NobelScatter = (props) => {
             padding={vertPaddings}
             interval={0}
             tickCount={data.maxWinners[1]}
+            fontSize={10}
             // domain={["dataMin-10", "dataMax+10"]}
           />
           {/* <ZAxis dataKey="year" range={[64, 144]} name="year" /> */}
-          <Legend verticalAlign="top" margin={{ top: 0 }} />
+          <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
           <Tooltip cursor={{ strokeDasharray: "3 3" }} />
           <Scatter
             shape="cross"
