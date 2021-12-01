@@ -56,7 +56,8 @@ export const parseData = (data) => {
   // })();
   console.log("xxx:", filteredData.maxWinners);
   filteredData.countryNum = filteredData[filteredData.length - 1].countryId;
-  filteredData.countries = Array.from(d3.group(data, (d) => d.country).keys());
+  // filteredData.countries = Array.from(d3.group(data, (d) => d.country).keys());
+  filteredData.countries = filteredData.winnersByCountry.map(([k, v]) => k);
   filteredData.categories = Array.from(
     d3.group(data, (d) => d.category).keys()
   );

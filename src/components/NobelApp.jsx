@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
 import { NobelFilter } from "./NobelFilter";
 import { fetchData, parseData } from "../dataUtil";
 import * as d3 from "d3";
@@ -38,6 +40,24 @@ export const NobelApp = (props) => {
     console.log("first effect end!");
   }, []);
 
+  const [state, setState] = useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
   if (data && !isDataProcessed) {
     setData({ data: parseData(data), isLoaded: true, isDataProcessed: true });
   }
@@ -50,12 +70,25 @@ export const NobelApp = (props) => {
   return (
     <>
       {/* <NobelViz data={data} isloaded={isLoaded}></NobelViz> */}
-      <NobelFilter
-        data={data}
-        category={data.categories}
-        gender={data.genders}
-        countries={data.countries}
-      ></NobelFilter>
+      <div>
+        {["left", "right", "top", "bottom"].map((anchor) => (
+          <Fragment key={anchor}>
+            <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+            <Drawer
+              anchor={anchor}
+              open={state[anchor]}
+              onClose={toggleDrawer(anchor, false)}
+            >
+              <NobelFilter
+                data={data}
+                category={data.categories}
+                gender={data.genders}
+                countries={data.countries}
+              ></NobelFilter>
+            </Drawer>
+          </Fragment>
+        ))}
+      </div>
     </>
   );
 };

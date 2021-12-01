@@ -9,26 +9,16 @@ import Paper from "@mui/material/Paper";
 const _ = require("lodash");
 
 function GroupCheckBox(props) {
-  // const options = ["Physics", "Chemistry", "Peace", "Literature", "Biology"];
-  // const options = (() => {
-  //   console.log("props:", props.options);
-  //   return props.options;
-  // })();
   const { legend, options, defaultOptions } = props;
-  const localOptions = options.map((option) => ({
+  const initialOptions = options.map((option) => ({
     label: option,
     isChecked: defaultOptions.includes(option),
     id: _.uniqueId(legend + "-"),
   }));
-  console.log("LALALA:", localOptions);
-  const [optionStates, updateOptionStates] = useState(localOptions);
+  console.log("Initial option states:", initialOptions);
 
+  const [optionStates, updateOptionStates] = useState(initialOptions);
   const [boxAllChecked, updateBoxAllChecked] = useState(true);
-
-  function PrintCategory() {
-    console.log(optionStates);
-    return <div>hello wolrd</div>;
-  }
 
   function indeterminate() {
     console.log(optionStates);
@@ -39,10 +29,6 @@ function GroupCheckBox(props) {
 
   function handleCategoryClick(e) {
     console.log("click->", e.target.value, ":", e.target.checked);
-    // const newState = {
-    //   ...optionStates,
-    //   [e.target.value]: e.target.checked,
-    // };
     const newOptionStates = optionStates.slice();
     let option = newOptionStates.find(
       (option) => option.label == e.target.value
@@ -54,7 +40,6 @@ function GroupCheckBox(props) {
     updateBoxAllChecked(
       !newOptionStates.map((option) => option.isChecked).includes(false)
     );
-    // updateBoxAllChecked(!Object.values(newOptionStates).includes(false));
   }
 
   function handleAllClick(e) {
