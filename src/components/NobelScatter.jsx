@@ -119,16 +119,6 @@ export const NobelScatter = (props) => {
       className="ScatterPlot"
       style={{ overflow: "auto", width: 600, height: 400 }}
     >
-      {/* <FlexText
-        sx={{
-          width: { md: 300, lg: 600 },
-          fontSize: { md: 16, lg: 30 },
-          color: { md: "red", lg: "green" },
-        }}
-      >
-        Hello world
-      </FlexText>
-      */}
       <ResponsiveContainer width={chartWidth()} height={chartHeight()}>
         <ScatterChart margin={margins}>
           <CartesianGrid strokeDasharray="3 3" />

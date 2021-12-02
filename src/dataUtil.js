@@ -81,3 +81,14 @@ const initFilters = (data, options) => {
     .concat(["China", "India"]);
   data.filters.year = [options.years[0], options.years.at(-1)];
 };
+
+export const getFilteredData = (data) => {
+  const filteredData = data.filter(
+    (d) =>
+      data.filters.category.includes(d.category) &&
+      data.filters.gender.includes(d.gender) &&
+      data.filters.country.includes(d.country) &&
+      d.year >= data.filters.year[0] &&
+      d.year <= data.filters.year[1]
+  );
+};
