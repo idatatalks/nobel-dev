@@ -78,7 +78,7 @@ export const NobelScatter = (props) => {
       ];
     })();
     console.log("xxx:", filteredData.maxWinners);
-    filteredData.countryNum = filteredData[filteredData.length - 1].countryId;
+    filteredData.countryNum = filteredData.at(-1).countryId;
     filteredData.countries = Array.from(
       d3.group(data, (d) => d.country).keys()
     );

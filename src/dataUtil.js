@@ -47,33 +47,37 @@ export const parseData = (data) => {
       .sort((a, b) => b[1] - a[1]);
   })();
 
-  // filteredData.winnersByCountry = d3.sort(filtere)
-  filteredData.maxWinners =
-    filteredData.winnersByCountry[filteredData.winnersByCountry.length - 1];
-  // filteredData.maxWinners = (() => {
-  //   let index = d3.maxIndex(filteredData.winnersByCountry, (d) => d[1]);
-  //   return [filteredData.winnersByCountry[index][0], filteredData.winnersByCountry[index][1]];
-  // })();
+  filteredData.maxWinners = filteredData.winnersByCountry.at(-1);
   console.log("xxx:", filteredData.maxWinners);
-  filteredData.countryNum = filteredData[filteredData.length - 1].countryId;
-  // filteredData.countries = Array.from(d3.group(data, (d) => d.country).keys());
-  filteredData.countries = filteredData.winnersByCountry.map(([k, v]) => k);
-  filteredData.categories = Array.from(
-    d3.group(data, (d) => d.category).keys()
-  );
-  filteredData.years = Array.from(d3.group(data, (d) => d.year).keys()).sort(
-    (a, b) => a - b
-  );
-  filteredData.genders = ["Male", "Female"];
-  console.log("Country numbers:", filteredData.countryNum);
-  console.log("Country names:", filteredData.countries.length);
-  console.log("filtered data:", filteredData);
+  filteredData.countryNum = filteredData.at(-1).countryId;
 
-  // setData({ data: filteredData, isDataMangled: true });
+  initOptions(filteredData);
+  initFilters(filteredData, filteredData.options);
+
+  console.log("options:", filteredData.options);
+  console.log("filters:", filteredData.filters);
+
   return filteredData;
 };
 
-export const getFilterTemplate = (data) => {
-  data.filterTemplate = { category: [], gender: [], countries: [] };
-  // data.filterTemplate.category =
+const initOptions = (data) => {
+  data.options = {};
+  data.options.countries = data.winnersByCountry.map(([k, v]) => k);
+  data.options.categories = Array.from(
+    d3.group(data, (d) => d.category).keys()
+  );
+  data.options.years = Array.from(d3.group(data, (d) => d.year).keys()).sort(
+    (a, b) => a - b
+  );
+  data.options.genders = ["Male", "Female"];
+};
+
+const initFilters = (data, options) => {
+  data.filters = {};
+  data.filters.category = [...options.categories];
+  data.filters.gender = [...options.genders];
+  data.filters.country = options.countries
+    .slice(0, 10)
+    .concat(["China", "India"]);
+  data.filters.year = [options.years[0], options.years.at(-1)];
 };

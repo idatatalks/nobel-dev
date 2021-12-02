@@ -1,10 +1,11 @@
 import { NobelScatter } from "./NobelScatter";
 
-export const NobelViz = (props) => {
+export const NobelViz = ({ data, isDataLoaded }) => {
   console.log("NobelViz rendered!");
-  if (!props.isloaded) {
-    console.log("xxx: data not loaded yet");
+  // console.log("isDataLoaded:", isDataLoaded);
+  if (!isDataLoaded) {
+    console.log("Data not loaded yet");
     return "";
   }
-  return <NobelScatter data={props.data}></NobelScatter>;
+  return <NobelScatter data={data}></NobelScatter>;
 };

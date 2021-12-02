@@ -1,4 +1,5 @@
 import { useEffect, useState, Fragment } from "react";
+import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import { NobelFilter } from "./NobelFilter";
@@ -6,10 +7,8 @@ import { fetchData, parseData } from "../dataUtil";
 import * as d3 from "d3";
 import { NobelViz } from "./NobelViz";
 import { NobelLineChart } from "./NobelLineChart";
+import { Menu } from "./Menu";
 
-const category = ["Physics", "Chemistry", "Peace", "Literature", "Biology"];
-const gender = ["Male", "Female"];
-const countries = ["USA", "China"];
 const dataURL =
   "https://gist.githubusercontent.com/idatatalks/8612a9f89c444b82728473a545813789/raw/nobel_winners_cleaned.csv";
 // const dataURL =
@@ -21,6 +20,7 @@ export const NobelApp = (props) => {
     isLoaded: false,
     isDataProcessed: false,
   });
+  const [filter, setFilter] = useState(null);
   // const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     console.log("first effect start");
@@ -32,6 +32,7 @@ export const NobelApp = (props) => {
           isLoaded: true,
           isDataProcessed: false,
         });
+        setFilter(data.filters);
         console.log("data parse middle before setIsLoaded");
         // setIsLoaded(true);
         console.log("data parse end!");
@@ -40,22 +41,9 @@ export const NobelApp = (props) => {
     console.log("first effect end!");
   }, []);
 
-  const [state, setState] = useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
+  const handleFilterChange = (filter) => {
+    data.filters = filter;
+    setFilter(filter);
   };
 
   if (data && !isDataProcessed) {
@@ -69,26 +57,14 @@ export const NobelApp = (props) => {
   console.log("FFF:", data);
   return (
     <>
-      {/* <NobelViz data={data} isloaded={isLoaded}></NobelViz> */}
-      <div>
-        {["left", "right", "top", "bottom"].map((anchor) => (
-          <Fragment key={anchor}>
-            <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-            <Drawer
-              anchor={anchor}
-              open={state[anchor]}
-              onClose={toggleDrawer(anchor, false)}
-            >
-              <NobelFilter
-                data={data}
-                category={data.categories}
-                gender={data.genders}
-                countries={data.countries}
-              ></NobelFilter>
-            </Drawer>
-          </Fragment>
-        ))}
-      </div>
+      <Menu data={data} onSetFilter={handleFilterChange} />
+      <NobelViz data={data} isDataLoaded={isLoaded}></NobelViz>
+      {/* <NobelFilter
+        data={data}
+        category={data.categories}
+        gender={data.genders}
+        countries={data.countries}
+      ></NobelFilter> */}
     </>
   );
 };
