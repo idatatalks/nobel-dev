@@ -1,8 +1,8 @@
 import { NobelScatter } from "./NobelScatter";
-import { getFilteredData } from "../dataUtil";
+import { updateDataByFilter } from "../dataUtil";
 
 export const NobelViz = ({ data, isDataLoaded }) => {
-  // const filteredData = getFilteredData(data);
+  // const filteredData = updateDataByFilter(data);
   console.log("NobelViz rendered!");
   console.log("Filtered data:", data);
   if (!isDataLoaded) {

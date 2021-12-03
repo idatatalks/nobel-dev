@@ -24,19 +24,20 @@ export async function fetchData(url) {
   // }
 }
 
-export const parseData = (data) => {
-  console.log(data);
+export const buildData = (rawData) => {
+  console.log(rawData);
+  let data = { rawData: rawData };
   data.winnersByCountry = (() => {
     return d3
-      .flatGroup(data, (d) => d.country)
+      .flatGroup(rawData, (d) => d.country)
       .map(([key, value]) => {
         return [key, value.length];
       })
       .sort((a, b) => b[1] - a[1]);
   })();
-  initOptions(data);
+  initOptions(rawData);
   initFilters(data, data.options);
-  data.filteredData = getFilteredData(data);
+  updateDataByFilter(data, data.filters);
   console.log("options:", data.options);
   console.log("filters:", data.filters);
 
@@ -53,6 +54,7 @@ const initOptions = (data) => {
     (a, b) => a - b
   );
   data.options.genders = ["Male", "Female"];
+  return data;
 };
 
 const initFilters = (data, options) => {
@@ -64,23 +66,24 @@ const initFilters = (data, options) => {
     .map((d) => d[0])
     .concat(["China", "India"]);
   data.filters.year = [options.years[0], options.years.at(-1)];
+  return data;
 };
 
-export const getFilteredData = (data) => {
-  console.log("data filter:", data);
+export const updateDataByFilter = (data, filters) => {
+  console.log("Before filter, data:", data);
   let filteredData = data.filter(
     (d) =>
-      data.filters.category.find(
+      filters.category.find(
         (item) => item.toLowerCase() == d.category.toLowerCase()
       ) &&
-      data.filters.gender.find(
+      filters.gender.find(
         (item) => item.toLowerCase() == d.gender.toLowerCase()
       ) &&
-      data.filters.country.find(
+      filters.country.find(
         (item) => item.toLowerCase() == d.country.toLowerCase()
       ) &&
-      d.year >= data.filters.year[0] &&
-      d.year <= data.filters.year[1]
+      d.year >= filters.year[0] &&
+      d.year <= filters.year[1]
   );
 
   filteredData = d3
@@ -88,7 +91,6 @@ export const getFilteredData = (data) => {
     .map((d, i) => {
       return d[1].map((d, j) => {
         d.winnerId = j + 1;
-        // d.winnerY = d.winnerId * mark.height;
         d.countryId = i + 1;
         return d;
       });
@@ -107,8 +109,8 @@ export const getFilteredData = (data) => {
   filteredData.maxWinners = filteredData.winnersByCountry[0];
   filteredData.countryNum = filteredData.at(-1).countryId;
 
-  console.log("after filter, data number:", filteredData.length);
-  console.log("after filter, data:", data);
-
-  return filteredData;
+  data.filters = filters;
+  data.filteredData = filteredData;
+  console.log("After filter, data:", data);
+  return data;
 };
