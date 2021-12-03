@@ -26,7 +26,7 @@ export async function fetchData(url) {
 
 export const buildData = (rawData) => {
   console.log(rawData);
-  let data = { rawData: rawData };
+  const data = { rawData };
   data.winnersByCountry = (() => {
     return d3
       .flatGroup(rawData, (d) => d.country)
@@ -35,8 +35,8 @@ export const buildData = (rawData) => {
       })
       .sort((a, b) => b[1] - a[1]);
   })();
-  initOptions(rawData);
-  initFilters(data, data.options);
+  initOptions(data);
+  initFilters(data);
   updateDataByFilter(data, data.filters);
   console.log("options:", data.options);
   console.log("filters:", data.filters);
@@ -46,22 +46,25 @@ export const buildData = (rawData) => {
 
 const initOptions = (data) => {
   data.options = {};
-  data.options.countries = Array.from(d3.group(data, (d) => d.country).keys());
+  data.options.countries = Array.from(
+    d3.group(data.rawData, (d) => d.country).keys()
+  );
   data.options.categories = Array.from(
-    d3.group(data, (d) => d.category).keys()
+    d3.group(data.rawData, (d) => d.category).keys()
   );
-  data.options.years = Array.from(d3.group(data, (d) => d.year).keys()).sort(
-    (a, b) => a - b
-  );
+  data.options.years = Array.from(
+    d3.group(data.rawData, (d) => d.year).keys()
+  ).sort((a, b) => a - b);
   data.options.genders = ["Male", "Female"];
   return data;
 };
 
-const initFilters = (data, options) => {
+const initFilters = (data) => {
+  const { options, winnersByCountry } = data;
   data.filters = {};
-  data.filters.category = [...options.categories];
+  data.filters.category = [...data.options.categories];
   data.filters.gender = [...options.genders];
-  data.filters.country = data.winnersByCountry
+  data.filters.country = winnersByCountry
     .slice(0, 10)
     .map((d) => d[0])
     .concat(["China", "India"]);
@@ -71,7 +74,7 @@ const initFilters = (data, options) => {
 
 export const updateDataByFilter = (data, filters) => {
   console.log("Before filter, data:", data);
-  let filteredData = data.filter(
+  let filteredData = data.rawData.filter(
     (d) =>
       filters.category.find(
         (item) => item.toLowerCase() == d.category.toLowerCase()

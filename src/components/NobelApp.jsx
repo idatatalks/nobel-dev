@@ -24,11 +24,11 @@ export const NobelApp = (props) => {
   useEffect(() => {
     console.log("first effect start");
     fetchData(dataURL)
-      .then((data) => {
+      .then((rawData) => {
         console.log("data parse start");
-        data = d3.csvParse(data, d3.autoType);
-        data = buildData(data);
-        setData({ data: data, isDataLoaded: true });
+        rawData = d3.csvParse(rawData, d3.autoType);
+        const data = buildData(rawData);
+        setData({ data, isDataLoaded: true });
         console.log("data parse end!");
       })
       .catch((error) => console.log("out: ", error));
@@ -36,7 +36,7 @@ export const NobelApp = (props) => {
   }, []);
 
   const handleFilterChange = (filters) => {
-    const tmpData = updateDataByFilter({ ...data }, filters);
+    const tmpData = updateDataByFilter(data, filters);
     setData({ data: { ...tmpData }, isDataLoaded: true });
   };
 
