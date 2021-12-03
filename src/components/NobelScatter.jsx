@@ -23,10 +23,11 @@ const FlexText = styled("div")({
 });
 
 export const NobelScatter = (props) => {
-  const [{ data, isDataMangled }, setData] = useState({
-    data: null,
-    isDataMangled: false,
-  });
+  const { data, xAxisConf, yAxisConf, scatter } = props;
+  // const [{ data, isDataMangled }, setData] = useState({
+  //   data: null,
+  //   isDataMangled: false,
+  // });
 
   const matches = useMediaQuery("(min-width:900px)");
   const width = matches ? "100%" : 600;
@@ -47,61 +48,8 @@ export const NobelScatter = (props) => {
   const horPaddings = { left: 10, right: 20 };
   const vertPaddings = { top: 10, bottom: 10 };
 
-  const filterData = () => {
-    const data = props.data;
-    console.log(data);
-    const filteredData = d3
-      .flatGroup(data, (d) => d.country)
-      .map((d, i) => {
-        return d[1].map((d, j) => {
-          d.winnerId = j + 1;
-          d.winnerY = d.winnerId * mark.height;
-          d.countryId = i + 1;
-          return d;
-        });
-      })
-      .flat();
-
-    filteredData.winnerNum = (() => {
-      return d3
-        .flatGroup(data, (d) => d.country)
-        .map(([key, value]) => {
-          return [key, value.length];
-        });
-    })();
-
-    filteredData.maxWinners = (() => {
-      let index = d3.maxIndex(filteredData.winnerNum, (d) => d[1]);
-      return [
-        filteredData.winnerNum[index][0],
-        filteredData.winnerNum[index][1],
-      ];
-    })();
-    console.log("xxx:", filteredData.maxWinners);
-    filteredData.countryNum = filteredData.at(-1).countryId;
-    filteredData.countries = Array.from(
-      d3.group(data, (d) => d.country).keys()
-    );
-    console.log("Country numbers:", filteredData.countryNum);
-    console.log("Country names:", filteredData.countries.length);
-    console.log("filtered data:", filteredData);
-
-    setData({ data: filteredData, isDataMangled: true });
-    return filteredData;
-  };
-  const xTickNum = () => {};
-
-  useEffect(() => {
-    filterData();
-  }, []);
-
-  if (!isDataMangled) {
-    console.log("Data is NOT processed yet.");
-    return "";
-  }
-
   const chartWidth = () =>
-    mark.width * 2 * data.countries.length +
+    mark.width * 2 * data.countryNum +
     margins.left +
     margins.right +
     horPaddings.left +
@@ -113,20 +61,20 @@ export const NobelScatter = (props) => {
     margins.bottom +
     vertPaddings.top +
     vertPaddings.bottom;
-
+  console.log("y tick counts:", data.maxWinners);
   return (
     <div
       className="ScatterPlot"
-      style={{ overflow: "auto", width: 600, height: 400 }}
+      style={{ overflow: "auto", width: "100%", height: 400 }}
     >
       <ResponsiveContainer width={chartWidth()} height={chartHeight()}>
         <ScatterChart margin={margins}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             allowDuplicatedCategory={false}
-            dataKey="countryId"
-            type="number"
-            name="country"
+            dataKey={xAxisConf.dataKey}
+            type={xAxisConf.type}
+            name={xAxisConf.name}
             tick={<CustomizedAxisTick data={data} />}
             data={data}
             angle={90}
@@ -134,18 +82,18 @@ export const NobelScatter = (props) => {
             interval={0}
             padding={horPaddings}
             allowDataOverflow={false}
-            tickCount={data.countries.length}
+            tickCount={xAxisConf.tickCount}
             domain={["dataMin", "dataMax"]}
           />
           <YAxis
-            dataKey="winnerId"
-            type="number"
-            name="number"
+            dataKey={yAxisConf.dataKey}
+            type={yAxisConf.type}
+            name={yAxisConf.name}
             domain={["auto", "dataMax"]}
             dy={0}
             padding={vertPaddings}
             interval={0}
-            tickCount={data.maxWinners[1]}
+            tickCount={yAxisConf.tickCount}
             fontSize={10}
             // domain={["dataMin-10", "dataMax+10"]}
           />
@@ -170,7 +118,7 @@ export const NobelScatter = (props) => {
 
 const CustomizedAxisTick = (props) => {
   const { x, y, payload, data, index } = props;
-  // console.log("YYY:", props);
+  console.log("YYY:", props);
   // const xlabels = Array.from(data.countries);
   // console.log(xlabels);
   // console.log(payload.value - 1, xlabels[payload.value - 1]);
@@ -185,7 +133,7 @@ const CustomizedAxisTick = (props) => {
         fill="#666"
         transform="rotate(-90)"
       >
-        {data.countries[payload.value - 1]}
+        {data.winnersByCountry[payload.value - 1][0]}
       </text>
     </g>
   );

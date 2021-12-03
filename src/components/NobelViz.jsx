@@ -2,9 +2,9 @@ import { NobelScatter } from "./NobelScatter";
 import { getFilteredData } from "../dataUtil";
 
 export const NobelViz = ({ data, isDataLoaded }) => {
-  const filteredData = getFilteredData(data);
+  // const filteredData = getFilteredData(data);
   console.log("NobelViz rendered!");
-  console.log("Filtered data:", filteredData);
+  console.log("Filtered data:", data);
   if (!isDataLoaded) {
     console.log("Data not loaded yet");
     return "";
@@ -12,8 +12,19 @@ export const NobelViz = ({ data, isDataLoaded }) => {
   return (
     <NobelScatter
       data={data}
-      xAxis={{ dataKey: "", type: "number", name: "country", tickCount: "" }}
-      yAxis={{ dataKey: "", type: "number", name: "country", tickCount: "" }}
+      xAxisConf={{
+        data: { data },
+        dataKey: "countryId",
+        type: "number",
+        name: "country",
+        tickCount: data.countryNum,
+      }}
+      yAxisConf={{
+        dataKey: "winnerId",
+        type: "number",
+        name: "number",
+        tickCount: data.maxWinners[1],
+      }}
       scatter={{
         legendType: "triangle",
         name: "Nobel Winners",

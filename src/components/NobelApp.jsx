@@ -3,7 +3,7 @@ import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import { NobelFilter } from "./NobelFilter";
-import { fetchData, parseData } from "../dataUtil";
+import { fetchData, parseData, getFilteredData } from "../dataUtil";
 import * as d3 from "d3";
 import { NobelViz } from "./NobelViz";
 import { NobelLineChart } from "./NobelLineChart";
@@ -41,9 +41,13 @@ export const NobelApp = (props) => {
     console.log("first effect end!");
   }, []);
 
-  const handleFilterChange = (filter) => {
-    data.filters = filter;
+  const handleFilterChange = (filter2) => {
+    console.log("compare filters:", data.filters === filter2);
+    console.log(data.filters);
+    console.log(filter2);
+    data.filters = filter2;
     setFilter(filter);
+    data.filteredData = getFilteredData(data);
   };
 
   if (data && !isDataProcessed) {
@@ -58,7 +62,7 @@ export const NobelApp = (props) => {
   return (
     <>
       <Menu data={data} onSetFilter={handleFilterChange} />
-      <NobelViz data={data} isDataLoaded={isLoaded}></NobelViz>
+      <NobelViz data={data.filteredData} isDataLoaded={isLoaded}></NobelViz>
       {/* <NobelFilter
         data={data}
         category={data.categories}
