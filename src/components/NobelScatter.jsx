@@ -67,7 +67,7 @@ export const NobelScatter = (props) => {
       className="ScatterPlot"
       style={{ overflow: "auto", width: "100%", height: 400 }}
     >
-      <ResponsiveContainer width={chartWidth()} height={chartHeight()}>
+      <ResponsiveContainer width={"100%"} height={chartHeight()}>
         <ScatterChart margin={margins}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis

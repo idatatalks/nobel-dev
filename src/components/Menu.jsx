@@ -9,29 +9,13 @@ export const Menu = (props) => {
   return (
     <Grid
       container
+      direction="row"
       columnSpacing={2}
       rowSpacing={2}
-      sx={{
-        width: "100%",
-        border: "2px solid red",
-        padding: 0,
-        margin: 0,
-      }}
+      justifyContent="center"
+      alignItems="center"
     >
-      <Grid
-        item
-        xs={2}
-        sm={2}
-        md={2}
-        lg={2}
-        xl={2}
-        sx={{
-          width: "100%",
-          border: "2px solid green",
-          padding: 0,
-          margin: 0,
-        }}
-      >
+      <Grid item xs={2}>
         <CategoryFilter
           data={data}
           label={"Category"}
@@ -40,7 +24,7 @@ export const Menu = (props) => {
           onSetFilter={onSetFilter}
         />
       </Grid>
-      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+      {/* <Grid item xs>
         <CategoryFilter
           data={data}
           label={"Gender"}
@@ -49,7 +33,7 @@ export const Menu = (props) => {
           onSetFilter={onSetFilter}
         />
       </Grid>
-      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+      <Grid item xs>
         <CategoryFilter
           data={data}
           label={"Country"}
@@ -57,16 +41,8 @@ export const Menu = (props) => {
           defaultOptions={data.filters.country}
           onSetFilter={onSetFilter}
         />
-      </Grid>
-      <Grid
-        item
-        xs={6}
-        sm={6}
-        md={6}
-        lg={6}
-        xl={6}
-        sx={{ paddingTop: 0, marginTop: -2 }}
-      >
+      </Grid> */}
+      <Grid item xs={6}>
         <SliderYear
           data={data}
           range={data.filters.year}

@@ -45,8 +45,8 @@ export const CategoryFilter = (props) => {
     onSetFilter({ ...data.filters, [label.toLowerCase()]: newValue });
   };
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300, border: "2px solid yellow" }}>
+    <>
+      <FormControl>
         <InputLabel id={labelId}>{label}</InputLabel>
         <Select
           labelId={labelId}
@@ -66,6 +66,6 @@ export const CategoryFilter = (props) => {
           ))}
         </Select>
       </FormControl>
-    </div>
+    </>
   );
 };
