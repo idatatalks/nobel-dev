@@ -20,8 +20,14 @@ const MenuProps = {
   },
 };
 
-export const CategoryFilter = (props) => {
-  const { data, label, options, defaultOptions, onSetFilter } = props;
+export const CategoryFilter = ({
+  data,
+  label,
+  options,
+  defaultOptions,
+  onSetFilter,
+  sx,
+}) => {
   console.log("label:", label);
   const [selectedOptions, setSelectedOptions] = useState(defaultOptions);
   const [[labelId, selectId], setCtrlId] = useState([
@@ -46,7 +52,7 @@ export const CategoryFilter = (props) => {
   };
   return (
     <>
-      <FormControl>
+      <FormControl sx={{ ...sx }}>
         <InputLabel id={labelId}>{label}</InputLabel>
         <Select
           labelId={labelId}
