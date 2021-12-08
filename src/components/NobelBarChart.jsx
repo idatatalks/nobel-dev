@@ -9,19 +9,25 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const NobelBarChart = (props) => {
+export const NobelBarChart = ({
+  data,
+  xDataKey,
+  xDataType,
+  barDataKey,
+  barDataType,
+}) => {
   return (
-    <div>
-      <ResponsiveContainer width={"70%"} height={250}>
+    <>
+      <ResponsiveContainer width={"100%"} height={250}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey={xDataKey} type={xDataType} />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="pv" fill="#8884d8" />
+          <Bar dataKey={barDataKey} fill="green" />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </>
   );
 };

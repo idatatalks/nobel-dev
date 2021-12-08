@@ -3,10 +3,6 @@ import { useState } from "react";
 import { CategoryFilter } from "./CategoryFilter";
 import SliderYear from "./SliderYear";
 
-// data={data}
-// onSetFilter={onSetFilter}
-// sx={{ maxWidth: "100%" }}
-
 export const Menu = ({ data, onSetFilter }) => {
   const commonConfig = {
     data,

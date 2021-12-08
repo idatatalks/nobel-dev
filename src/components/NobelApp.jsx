@@ -8,6 +8,7 @@ import * as d3 from "d3";
 import { NobelViz } from "./NobelViz";
 import { NobelLineChart } from "./NobelLineChart";
 import { Menu } from "./Menu";
+import { NobelCharts } from "./NobelCharts";
 
 const dataURL =
   "https://gist.githubusercontent.com/idatatalks/8612a9f89c444b82728473a545813789/raw/nobel_winners_cleaned.csv";
@@ -48,6 +49,7 @@ export const NobelApp = (props) => {
   return (
     <>
       <Menu data={data} onSetFilter={handleFilterChange} />
+      <NobelCharts data={data.filteredData} />
       <NobelViz data={data.filteredData} isDataLoaded={isDataLoaded}></NobelViz>
       {/* <NobelFilter
         data={data}
