@@ -1,7 +1,10 @@
 import { Grid } from "@mui/material";
 import { NobelBarChart } from "./NobelBarChart";
-
+import { getNobelNumPerCountry } from "../dataUtil";
 export const NobelCharts = ({ data }) => {
+  console.log("DDD:", data);
+  const barchartData = getNobelNumPerCountry(data);
+  console.log("barchartData:", barchartData);
   return (
     <Grid
       container
@@ -15,11 +18,13 @@ export const NobelCharts = ({ data }) => {
     >
       <Grid item width={"100%"}>
         <NobelBarChart
-          data={data}
-          xDataKey={"country"}
-          xDataType={"category"}
+          data={barchartData}
+          xDataKey={"countryId"}
+          xDataType={"number"}
           barDataKey={"number"}
           barDataType={"number"}
+          beginYear={data.year[0]}
+          endYear={data.year[1]}
         />
       </Grid>
     </Grid>

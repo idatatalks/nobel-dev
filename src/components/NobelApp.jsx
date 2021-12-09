@@ -3,7 +3,12 @@ import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import { NobelFilter } from "./NobelFilter";
-import { fetchData, buildData, updateDataByFilter } from "../dataUtil";
+import {
+  fetchData,
+  buildData,
+  updateDataByFilter,
+  getNobelNumPerCountry,
+} from "../dataUtil";
 import * as d3 from "d3";
 import { NobelViz } from "./NobelViz";
 import { NobelLineChart } from "./NobelLineChart";

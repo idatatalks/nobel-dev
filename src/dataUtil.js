@@ -111,9 +111,18 @@ export const updateDataByFilter = (data, filters) => {
 
   filteredData.maxWinners = filteredData.winnersByCountry[0];
   filteredData.countryNum = filteredData.at(-1).countryId;
+  filteredData.year = filters.year;
 
   data.filters = filters;
   data.filteredData = filteredData;
   console.log("After filter, data:", data);
   return data;
+};
+
+export const getNobelNumPerCountry = (filter) => {
+  return filter.winnersByCountry.map((d, i) => ({
+    country: d[0],
+    number: d[1],
+    countryId: i + 1,
+  }));
 };
