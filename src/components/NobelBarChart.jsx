@@ -1,4 +1,5 @@
 import {
+  ComposedChart,
   BarChart,
   CartesianGrid,
   XAxis,
@@ -7,7 +8,16 @@ import {
   Legend,
   Bar,
   ResponsiveContainer,
+  LabelList,
+  Brush,
 } from "recharts";
+
+const margins = {
+  top: 20,
+  right: 5,
+  bottom: 100,
+  left: 30,
+};
 
 export const NobelBarChart = ({
   data,
@@ -18,24 +28,50 @@ export const NobelBarChart = ({
   beginYear,
   endYear,
 }) => {
+  const minXTickGap = 50;
+  const minWidth = data.length * minXTickGap;
+  console.log("minWidth:", minWidth);
   return (
     <>
-      <ResponsiveContainer width={"100%"} height={250}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xDataKey} tick={<CustomizedAxisTick data={data} />} />
-          <YAxis />
-          <Tooltip />
+      <ResponsiveContainer
+        width={"100%"}
+        minWidth={minWidth}
+        height={600}
+        minHeight={500}
+      >
+        <BarChart
+          data={data}
+          margin={margins}
+          style={{ /*overflow: "auto", */ border: "2px solid red" }}
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey={xDataKey}
+            tick={<CustomizedAxisTick data={data} />}
+            tickLine={false}
+            axisLine={false}
+            allowDataOverflow={false}
+            interval={0}
+            fontSize={20}
+          />
+          <YAxis hide={true} axisLine={false} tickLine={false} />
+          <Tooltip content={<CustomTooltip />} />
           <Legend
             name="Winners Rank By Country123"
             verticalAlign="top"
             height={36}
+            wrapperStyle={{ top: 5, paddingTop: 20, border: "2px solid green" }}
           />
           <Bar
-            name={`Winners Rank By Country(${beginYear}~${endYear})`}
+            name={`Nobel winners by country(${beginYear}~${endYear})`}
             dataKey={barDataKey}
             fill="green"
-          />
+            style={{ border: "2px solid yellow" }}
+            interval={30}
+          >
+            <LabelList dataKey={barDataKey} position="top" />
+          </Bar>
+          {/* <Brush dataKey={xDataKey} height={30} y={-15} stroke="#8884d8" /> */}
         </BarChart>
       </ResponsiveContainer>
     </>
@@ -61,7 +97,13 @@ const CustomizedAxisTick = (props) => {
         transform="rotate(-90)"
       >
         {data[payload.value - 1].country}
+        {/* {payload.value - 1} */}
       </text>
     </g>
   );
+};
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  //Don't display tooltip, but remaining the animation effect of bar selection
+  return null;
 };
