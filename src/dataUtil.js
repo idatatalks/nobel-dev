@@ -126,3 +126,13 @@ export const getNobelNumPerCountry = (filter) => {
     countryId: i + 1,
   }));
 };
+
+export const getDataByRadio = (data) => {
+  let sum = data.reduce((sum, d) => sum + d.number, 0);
+  data.forEach((d) => {
+    d.radio = (d.number * 100) / sum;
+    // d.radio = `${((d.number * 100) / sum).toFixed(0)}%`;
+  });
+  console.log("Radio:", data);
+  return data;
+};

@@ -1,7 +1,8 @@
 import { Grid } from "@mui/material";
 import { NobelBarChart } from "./NobelBarChart";
-import { PieChart, Pie, Tooltip } from "recharts";
-import { getNobelNumPerCountry } from "../dataUtil";
+import { NobelPieChart } from "./NobelPieChart";
+import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
+import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
 export const NobelCharts = ({ data }) => {
   console.log("DDD:", data);
   const barchartData = getNobelNumPerCountry(data);
@@ -29,18 +30,24 @@ export const NobelCharts = ({ data }) => {
         />
       </Grid>
       <Grid item width={"25%"}>
-        <PieChart width={400} height={400}>
-          <Pie
-            data={barchartData}
-            dataKey={"number"}
-            cx={100}
-            cy={150}
-            outerRadius={60}
-            fill="#8884d8"
-            label
-          />
-          <Tooltip />
-        </PieChart>
+        <NobelPieChart
+          data={getDataByRadio(barchartData)}
+          dataKey={"radio"}
+        ></NobelPieChart>
+        {/* <ResponsiveContainer width={"100%"} height={400}>
+          <PieChart>
+            <Pie
+              data={barchartData}
+              dataKey={"number"}
+              cx={120}
+              cy={150}
+              outerRadius={70}
+              fill="#8884d8"
+              label
+            />
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer> */}
       </Grid>
     </Grid>
   );
