@@ -33,6 +33,8 @@ export const NobelCharts = ({ data }) => {
         <NobelPieChart
           data={getDataByRadio(barchartData)}
           dataKey={"radio"}
+          beginYear={data.year[0]}
+          endYear={data.year[1]}
         ></NobelPieChart>
         {/* <ResponsiveContainer width={"100%"} height={400}>
           <PieChart>
