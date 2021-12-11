@@ -6,7 +6,7 @@ import { NobelFilter } from "./NobelFilter";
 import {
   fetchData,
   buildData,
-  updateDataByFilter,
+  filterDataBySelection,
   getNobelNumPerCountry,
 } from "../dataUtil";
 import * as d3 from "d3";
@@ -42,7 +42,7 @@ export const NobelApp = (props) => {
   }, []);
 
   const handleFilterChange = (filters) => {
-    const tmpData = updateDataByFilter(data, filters);
+    const tmpData = filterDataBySelection(data, filters);
     setData({ data: { ...tmpData }, isDataLoaded: true });
   };
 
@@ -55,7 +55,7 @@ export const NobelApp = (props) => {
     <>
       <Menu data={data} onSetFilter={handleFilterChange} />
       <NobelCharts data={data.filteredData} />
-      <NobelViz data={data.filteredData} isDataLoaded={isDataLoaded}></NobelViz>
+      {/* <NobelViz data={data.filteredData} isDataLoaded={isDataLoaded}></NobelViz> */}
       {/* <NobelFilter
         data={data}
         category={data.categories}

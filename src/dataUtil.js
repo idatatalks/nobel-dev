@@ -37,7 +37,7 @@ export const buildData = (rawData) => {
   })();
   initOptions(data);
   initFilters(data);
-  updateDataByFilter(data, data.filters);
+  filterDataBySelection(data, data.filters);
   console.log("options:", data.options);
   console.log("filters:", data.filters);
 
@@ -72,9 +72,9 @@ const initFilters = (data) => {
   return data;
 };
 
-export const updateDataByFilter = (data, filters) => {
+export const filterDataBySelection = (data, filters) => {
   console.log("Before filter, data:", data);
-  let filteredData = data.rawData.filter(
+  data.filteredData = data.rawData.filter(
     (d) =>
       filters.category.find(
         (item) => item.toLowerCase() == d.category.toLowerCase()
@@ -88,9 +88,12 @@ export const updateDataByFilter = (data, filters) => {
       d.year >= filters.year[0] &&
       d.year <= filters.year[1]
   );
+  data.filteredData = d3.flatGroup(data.filteredData, (d) => d.country);
+  return data;
+};
 
-  filteredData = d3
-    .flatGroup(filteredData, (d) => d.country)
+export const buildData = (data) => {
+  data
     .map((d, i) => {
       return d[1].map((d, j) => {
         d.winnerId = j + 1;

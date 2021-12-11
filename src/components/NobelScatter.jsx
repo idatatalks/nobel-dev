@@ -13,7 +13,12 @@ import {
   ZAxis,
 } from "recharts";
 import "../styles.css";
-import { Box, StyledEngineProvider, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Slider,
+  StyledEngineProvider,
+  useMediaQuery,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const FlexText = styled("div")({
@@ -61,12 +66,38 @@ export const NobelScatter = (props) => {
     margins.bottom +
     vertPaddings.top +
     vertPaddings.bottom;
-  console.log("y tick counts:", data.maxWinners);
+
+  const yearMarks = [
+    { value: data.year[0], label: data.year[0] },
+    { value: data.year[1], label: data.year[1] },
+  ];
+
+  const [year, updateYear] = useState(
+    parseInt(data.year[0] + (data.year[1] - data.year[0]) / 2)
+  );
+
+  const dataPerYear = data.filter((d) => d.year == year);
+  console.log("XXXX year:", year);
+  console.log("XXXX dataPerYear:", dataPerYear);
+
+  if (dataPerYear.length == 0) return "";
+
   return (
     <div
       className="ScatterPlot"
       style={{ overflow: "auto", width: "100%", height: 400 }}
     >
+      <Box sx={{ width: "70%", marginX: 10, marginY: 10 }}>
+        <Slider
+          aria-label="Always visible"
+          defaultValue={2001}
+          min={data.year[0]}
+          max={data.year[1]}
+          step={1}
+          marks={yearMarks}
+          valueLabelDisplay="on"
+        />
+      </Box>
       <ResponsiveContainer width={"100%"} height={chartHeight()}>
         <ScatterChart margin={margins}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -75,8 +106,8 @@ export const NobelScatter = (props) => {
             dataKey={xAxisConf.dataKey}
             type={xAxisConf.type}
             name={xAxisConf.name}
-            tick={<CustomizedAxisTick data={data} />}
-            data={data}
+            tick={<CustomizedAxisTick data={dataPerYear} />}
+            data={dataPerYear}
             angle={90}
             dx={-50}
             interval={0}
@@ -106,7 +137,7 @@ export const NobelScatter = (props) => {
             dx={10}
             dy={10}
             name="Top 5 Nobel Countries"
-            data={data}
+            data={dataPerYear}
             fill="#8884d8"
             shape={<CustomizedScatterShape />}
           />
