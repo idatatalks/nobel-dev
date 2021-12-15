@@ -27,17 +27,10 @@ export async function fetchData(url) {
 export const buildData = (rawData) => {
   console.log(rawData);
   const data = { rawData };
-  data.winnersByCountry = (() => {
-    return d3
-      .flatGroup(rawData, (d) => d.country)
-      .map(([key, value]) => {
-        return [key, value.length];
-      })
-      .sort((a, b) => b[1] - a[1]);
-  })();
   initOptions(data);
   initFilters(data);
   filterDataBySelection(data, data.filters);
+  buildChartData(data);
   console.log("options:", data.options);
   console.log("filters:", data.filters);
 
@@ -45,80 +38,79 @@ export const buildData = (rawData) => {
 };
 
 const initOptions = (data) => {
-  data.options = {};
-  data.options.countries = Array.from(
-    d3.group(data.rawData, (d) => d.country).keys()
+  const { rawData } = data;
+  const options = {};
+  options.countries = Array.from(d3.group(rawData, (d) => d.country).keys());
+  options.categories = Array.from(d3.group(rawData, (d) => d.category).keys());
+  options.years = Array.from(d3.group(rawData, (d) => d.year).keys()).sort(
+    (a, b) => a - b
   );
-  data.options.categories = Array.from(
-    d3.group(data.rawData, (d) => d.category).keys()
-  );
-  data.options.years = Array.from(
-    d3.group(data.rawData, (d) => d.year).keys()
-  ).sort((a, b) => a - b);
-  data.options.genders = ["Male", "Female"];
+  options.genders = ["Male", "Female"];
+  data.options = options;
   return data;
 };
 
 const initFilters = (data) => {
-  const { options, winnersByCountry } = data;
-  data.filters = {};
-  data.filters.category = [...data.options.categories];
-  data.filters.gender = [...options.genders];
-  data.filters.country = winnersByCountry
+  const { options, rawData } = data;
+  const filters = {};
+  filters.category = [...data.options.categories];
+  filters.gender = [...options.genders];
+  filters.country = d3
+    .rollups(
+      rawData,
+      (v) => v.length,
+      (d) => d.country
+    )
+    .sort((d1, d2) => d3.descending(d1[1], d2[1]))
     .slice(0, 10)
     .map((d) => d[0])
     .concat(["China", "India"]);
-  data.filters.year = [options.years[0], options.years.at(-1)];
+  filters.year = [options.years[0], options.years.at(-1)];
+  data.filters = filters;
   return data;
 };
 
-export const filterDataBySelection = (data, filters) => {
+export const filterDataBySelection = (data) => {
+  const { filters } = data;
   console.log("Before filter, data:", data);
-  data.filteredData = data.rawData.filter(
+  const filteredData = data.rawData.filter(
     (d) =>
+      d.year >= filters.year[0] &&
+      d.year <= filters.year[1] &&
+      filters.country.find(
+        (item) => item.toLowerCase() == d.country.toLowerCase()
+      ) &&
       filters.category.find(
         (item) => item.toLowerCase() == d.category.toLowerCase()
       ) &&
       filters.gender.find(
         (item) => item.toLowerCase() == d.gender.toLowerCase()
-      ) &&
-      filters.country.find(
-        (item) => item.toLowerCase() == d.country.toLowerCase()
-      ) &&
-      d.year >= filters.year[0] &&
-      d.year <= filters.year[1]
+      )
   );
-  data.filteredData = d3.flatGroup(data.filteredData, (d) => d.country);
+  data.filteredData = filteredData;
+  console.log("XXXXX after filter:", data);
   return data;
 };
 
-export const buildData = (data) => {
-  data
-    .map((d, i) => {
-      return d[1].map((d, j) => {
-        d.winnerId = j + 1;
-        d.countryId = i + 1;
-        return d;
-      });
-    })
-    .flat();
-
-  filteredData.winnersByCountry = (() => {
-    return d3
-      .flatGroup(filteredData, (d) => d.country)
-      .map(([key, value]) => {
-        return [key, value.length];
-      })
-      .sort((a, b) => b[1] - a[1]);
-  })();
+export const buildChartData = (data) => {
+  const { filteredData } = data;
+  filteredData.winnersByCountry = d3
+    .flatRollup(
+      filteredData,
+      (v) => v.length,
+      (d) => d.country
+    )
+    .sort((a, b) => d3.descending(a[1], b[1]));
 
   filteredData.maxWinners = filteredData.winnersByCountry[0];
-  filteredData.countryNum = filteredData.at(-1).countryId;
-  filteredData.year = filters.year;
+  filteredData.sumWinners = d3.sum(
+    filteredData.winnersByCountry,
+    ([k, v]) => v
+  );
+  filteredData.countryNum = filteredData.winnersByCountry.length;
+  filteredData.year = data.filters.year;
 
-  data.filters = filters;
-  data.filteredData = filteredData;
-  console.log("After filter, data:", data);
+  console.log("XXXXX chart data:", data);
   return data;
 };
 

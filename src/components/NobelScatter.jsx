@@ -53,20 +53,6 @@ export const NobelScatter = (props) => {
   const horPaddings = { left: 10, right: 20 };
   const vertPaddings = { top: 10, bottom: 10 };
 
-  const chartWidth = () =>
-    mark.width * 2 * data.countryNum +
-    margins.left +
-    margins.right +
-    horPaddings.left +
-    horPaddings.right;
-
-  const chartHeight = () =>
-    mark.height * 1.2 * data.maxWinners[1] +
-    margins.top +
-    margins.bottom +
-    vertPaddings.top +
-    vertPaddings.bottom;
-
   const yearMarks = [
     { value: data.year[0], label: data.year[0] },
     { value: data.year[1], label: data.year[1] },
@@ -76,9 +62,24 @@ export const NobelScatter = (props) => {
     parseInt(data.year[0] + (data.year[1] - data.year[0]) / 2)
   );
 
-  const dataPerYear = data.filter((d) => d.year == year);
+  const maxWinnersAllYears = calMaxWinnersAllTime(data);
+  const dataPerYear = buildScatterData(data);
   console.log("XXXX year:", year);
   console.log("XXXX dataPerYear:", dataPerYear);
+
+  const chartWidth = () =>
+    mark.width * 2 * data.countryNum +
+    margins.left +
+    margins.right +
+    horPaddings.left +
+    horPaddings.right;
+
+  const chartHeight = () =>
+    mark.height * 1.2 * maxWinnersAllYears +
+    margins.top +
+    margins.bottom +
+    vertPaddings.top +
+    vertPaddings.bottom;
 
   if (dataPerYear.length == 0) return "";
 
@@ -90,7 +91,7 @@ export const NobelScatter = (props) => {
       <Box sx={{ width: "70%", marginX: 10, marginY: 10 }}>
         <Slider
           aria-label="Always visible"
-          defaultValue={2001}
+          defaultValue={year}
           min={data.year[0]}
           max={data.year[1]}
           step={1}
@@ -113,7 +114,7 @@ export const NobelScatter = (props) => {
             interval={0}
             padding={horPaddings}
             allowDataOverflow={false}
-            tickCount={xAxisConf.tickCount}
+            tickCount={dataPerYear.countryNum}
             domain={["dataMin", "dataMax"]}
           />
           <YAxis
@@ -124,11 +125,10 @@ export const NobelScatter = (props) => {
             dy={0}
             padding={vertPaddings}
             interval={0}
-            tickCount={yAxisConf.tickCount}
+            tickCount={dataPerYear.maxWinners}
             fontSize={10}
             // domain={["dataMin-10", "dataMax+10"]}
           />
-          {/* <ZAxis dataKey="year" range={[64, 144]} name="year" /> */}
           <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
           <Tooltip cursor={{ strokeDasharray: "3 3" }} />
           <Scatter
@@ -164,7 +164,7 @@ const CustomizedAxisTick = (props) => {
         fill="#666"
         transform="rotate(-90)"
       >
-        {data.winnersByCountry[payload.value - 1][0]}
+        {data.winnersByCountry[payload.value][0]}
       </text>
     </g>
   );
@@ -178,4 +178,53 @@ const CustomizedScatterShape = (props) => {
       <circle cx={5} cy={5} r={5} fill="orange" />
     </g>
   );
+};
+
+const buildScatterData = (data) => {
+  console.log("XXXXX scatter data:", data);
+  const defaultYear = parseInt(
+    data.year[0] + (data.year[1] - data.year[0]) / 2
+  );
+  console.log("default year:", defaultYear);
+  const scatterData = data.filter((d) => d.year == defaultYear);
+  scatterData.countryNum = d3.group(scatterData, (d) => d.country).size;
+  scatterData.maxWinners = d3.max(
+    d3.flatRollup(
+      scatterData,
+      (v) => v.length,
+      (d) => d.country
+    ),
+    (d) => d[1]
+  );
+
+  d3.flatGroup(scatterData, (d) => d.country).forEach((d, i) => {
+    d[1].forEach((d, j) => {
+      d.winnerId = j;
+      d.countryId = i;
+    });
+  });
+
+  scatterData.winnersByCountry = d3
+    .flatRollup(
+      scatterData,
+      (v) => v.length,
+      (d) => d.country
+    )
+    .sort((a, b) => d3.descending(a, b));
+
+  console.log("XXXXX scatter data:", scatterData);
+  return scatterData;
+};
+
+const calMaxWinnersAllTime = (data) => {
+  let tmpData = d3
+    .flatRollup(
+      data,
+      (v) => v.length,
+      (d) => d.year,
+      (d) => d.country
+    )
+    .sort((a, b) => d3.descending(a[2], b[2]));
+  console.log("XXXXX sorted data", tmpData);
+  return tmpData[0][2];
 };

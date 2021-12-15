@@ -8,6 +8,7 @@ export const NobelCharts = ({ data }) => {
   console.log("DDD:", data);
   const barchartData = getNobelNumPerCountry(data);
   console.log("barchartData:", barchartData);
+  // const scatterData = buildScatterData(data);
   return (
     <Grid
       container
@@ -42,7 +43,7 @@ export const NobelCharts = ({ data }) => {
           }}
         ></NobelScatter>
       </Grid>
-      <Grid item width={"75%"}>
+      {/* <Grid item width={"75%"}>
         <NobelBarChart
           data={barchartData}
           xDataKey={"countryId"}
@@ -60,7 +61,7 @@ export const NobelCharts = ({ data }) => {
           beginYear={data.year[0]}
           endYear={data.year[1]}
         ></NobelPieChart>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
