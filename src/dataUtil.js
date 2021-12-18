@@ -30,7 +30,6 @@ export const buildData = (rawData) => {
   initOptions(data);
   initFilters(data);
   filterDataBySelection(data, data.filters);
-  buildChartData(data);
   console.log("options:", data.options);
   console.log("filters:", data.filters);
 
@@ -70,7 +69,8 @@ const initFilters = (data) => {
   return data;
 };
 
-export const filterDataBySelection = (data) => {
+export const filterDataBySelection = (data, newFilter) => {
+  data.filters = newFilter;
   const { filters } = data;
   console.log("Before filter, data:", data);
   const filteredData = data.rawData.filter(
@@ -89,6 +89,7 @@ export const filterDataBySelection = (data) => {
   );
   data.filteredData = filteredData;
   console.log("XXXXX after filter:", data);
+  buildChartData(data);
   return data;
 };
 

@@ -1,4 +1,6 @@
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
+
 const RADIAN = Math.PI / 180;
 const margins = {
   top: 30,
@@ -52,8 +54,17 @@ export const NobelPieChart = ({ data, dataKey, beginYear, endYear }) => {
 };
 
 const renderCustomizedLabel = (props) => {
-  const { x, y, cx, cy, midAngle, innerRadius, outerRadius, percent, index } =
-    props;
+  const {
+    x,
+    y,
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  } = props;
   console.log("Pie label:", props);
 
   return (
@@ -102,6 +113,10 @@ const CustomLegend = (props) => {
 };
 
 const filterDataByRadio = (data, minRadio) => {
+  data = getNobelNumPerCountry(data);
+  console.log("barchartData:", data);
+  data = getDataByRadio(data);
+
   console.log("XXXXXX, RAW data:", data);
   let totalNum = data.reduce((acc, c) => acc + c.number, 0);
   console.log("XXXXXX, RAW data total num:", totalNum);

@@ -12,6 +12,8 @@ import {
   Brush,
 } from "recharts";
 
+import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
+
 const margins = {
   top: 20,
   right: 5,
@@ -28,6 +30,9 @@ export const NobelBarChart = ({
   beginYear,
   endYear,
 }) => {
+  data = getNobelNumPerCountry(data);
+  console.log("XXX barchartData:", data);
+
   const minXTickGap = 50;
   const minWidth = data.length * minXTickGap;
   console.log("minWidth:", minWidth);
