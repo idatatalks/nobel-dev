@@ -26,7 +26,7 @@ export const NobelApp = (props) => {
     data: null,
     isDataLoaded: false,
   });
-  const [chart, setChart] = useState("BarChart");
+  const [chart, setChart] = useState("TotalWinnersByCountry");
   // const [filter, setFilter] = useState(null);
   // const [isDataLoaded, setisDataLoaded] = useState(false);
   useEffect(() => {

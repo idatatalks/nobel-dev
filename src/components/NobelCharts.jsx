@@ -9,14 +9,14 @@ export const NobelCharts = ({ data, selectedChart }) => {
   console.log("DDD:", data);
   // const scatterData = buildScatterData(data);
   const nobelChart = () => {
-    if (selectedChart == "ScatterChart") {
+    if (selectedChart == "WinnersByCategory") {
       console.log("ScatterChart:", data);
       return (
         <Grid item width={"100%"}>
           <NobelPerYear data={data} />
         </Grid>
       );
-    } else if (selectedChart == "BarChart") {
+    } else if (selectedChart == "TotalWinnersByCountry") {
       console.log("barchartData:", data);
       return (
         <>
@@ -41,6 +41,8 @@ export const NobelCharts = ({ data, selectedChart }) => {
           </Grid>
         </>
       );
+    } else if (selectedChart == "TotalWinnersByCountry") {
+      return "";
     }
   };
   return (

@@ -8,15 +8,26 @@ export function ChartSelection({ selection, onSetSelection }) {
   };
 
   return (
-    <div style={{ border: "2px solid green", textAlign:'center' }}>
+    <div style={{ border: "2px solid green", textAlign: "center" }}>
       <ToggleButtonGroup
         color="primary"
         value={selection}
         exclusive
         onChange={handleSelection}
+        sx={{ textTransform: "none" }}
       >
-        <ToggleButton value="BarChart">BarChart</ToggleButton>
-        <ToggleButton value="ScatterChart">ScatterChart</ToggleButton>
+        <ToggleButton
+          value="TotalWinnersByCountry"
+          sx={{ textTransform: "none" }}
+        >
+          Total Winners By Country
+        </ToggleButton>
+        <ToggleButton value="WinnersByCategory" sx={{ textTransform: "none" }}>
+          Winners By Category
+        </ToggleButton>
+        <ToggleButton value="WinnersByYear" sx={{ textTransform: "none" }}>
+          Winners By Year
+        </ToggleButton>
       </ToggleButtonGroup>
     </div>
   );

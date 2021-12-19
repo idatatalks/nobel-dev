@@ -5,7 +5,7 @@ export default function SliderYear(props) {
   const { range, onSetFilter, data, min, max } = props;
   // const [yearRange, updateYearRange] = useState([min, max]);
   const handleSliderChange = (event, newValue) => {
-    console.log(newValue);
+    console.log("On Slider Change:", newValue);
     // updateYearRange(newValue);
     onSetFilter({ ...data.filters, year: newValue });
   };
@@ -21,7 +21,7 @@ export default function SliderYear(props) {
       <Slider
         defaultValue={range}
         value={range}
-        onChange={handleSliderChange}
+        onChangeCommitted={handleSliderChange}
         valueLabelDisplay="on"
         min={min}
         max={max}

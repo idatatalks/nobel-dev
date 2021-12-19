@@ -60,7 +60,8 @@ export const NobelBarChart = ({
             fontSize={20}
           />
           <YAxis hide={true} axisLine={false} tickLine={false} />
-          <Tooltip content={<CustomTooltip />} />
+          {/* <Tooltip content={<CustomTooltip />} /> */}
+          <Tooltip />
           <Legend
             name="Winners Rank By Country123"
             verticalAlign="top"

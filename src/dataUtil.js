@@ -39,7 +39,9 @@ export const buildData = (rawData) => {
 const initOptions = (data) => {
   const { rawData } = data;
   const options = {};
-  options.countries = Array.from(d3.group(rawData, (d) => d.country).keys());
+  options.countries = Array.from(
+    d3.group(rawData, (d) => d.country).keys()
+  ).sort();
   options.categories = Array.from(d3.group(rawData, (d) => d.category).keys());
   options.years = Array.from(d3.group(rawData, (d) => d.year).keys()).sort(
     (a, b) => a - b
