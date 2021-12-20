@@ -35,6 +35,7 @@ const buildData = (data) => {
 };
 
 export const NobelPerYear = (props) => {
+  console.log("NobelPerYear render!");
   const { data } = props;
   const dataPerYear = buildData(data);
 

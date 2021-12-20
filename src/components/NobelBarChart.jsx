@@ -30,6 +30,7 @@ export const NobelBarChart = ({
   beginYear,
   endYear,
 }) => {
+  console.log("NobelBarChart render");
   data = getNobelNumPerCountry(data);
   console.log("XXX barchartData:", data);
 
