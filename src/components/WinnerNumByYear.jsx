@@ -12,8 +12,9 @@ import {
 import * as d3 from "d3";
 
 const buildData = (data) => {
-  const countries = [...d3.group(data, (d) => d.country).keys()];
+  const countries = data.winnersByCountry.map((d) => d[0]);
   console.log("XXXXX country:", countries);
+  console.log("XXXXX data:", data);
   let sortedData = d3
     .flatRollup(
       [...data],
@@ -118,9 +119,10 @@ export const WinnerNumByYear = ({ data }) => {
           />
           <YAxis />
           <Tooltip />
-          {data.countries.map((c) => (
+          {data.countries.map((c, i) => (
             <Area
-              type="monotone"
+              key={i}
+              type="step"
               dataKey={c}
               stackId="1"
               stroke="#8884d8"
