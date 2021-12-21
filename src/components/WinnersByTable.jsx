@@ -1,20 +1,5 @@
 import * as React from "react";
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
-
-// const rows = [
-//   { id: 1, col1: "Hello", col2: "World" },
-//   { id: 2, col1: "XGrid", col2: "is Awesome" },
-//   { id: 3, col1: "Material-UI", col2: "is Amazing" },
-//   { id: 4, col1: "Hello", col2: "World" },
-//   { id: 5, col1: "XGrid", col2: "is Awesome" },
-//   { id: 6, col1: "Material-UI", col2: "is Amazing" },
-// ];
-
-// const columns = [
-//   { field: "id", hide: true },
-//   { field: "col1", headerName: "Column 1", width: 150 },
-//   { field: "col2", headerName: "Column 2", width: 150 },
-// ];
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 export function WinnersByTable({ data }) {
   console.log("WinnersByTable:", data);
@@ -24,14 +9,55 @@ export function WinnersByTable({ data }) {
   });
   console.log("WinnersByTable:", data[0]);
   const columns = Object.entries(data[0]).map((d) => {
-    return d[0] == "id"
-      ? { field: d[0], hide: true }
-      : { field: d[0], headerName: d[0], width: 150, fluid: 1 };
+    let o = { field: d[0], headerName: d[0], width: 150, fluid: 1 };
+    if (d[0] == "id") {
+      o.hide = true;
+    }
+    if (d[0] == "link") {
+      o.renderCell = (params) => {
+        console.log("YYYY:", params);
+        return (
+          <div
+            style={{
+              overflow: "auto",
+              lineHeight: "160%",
+              padding: 0,
+            }}
+          >
+            <a href={params.value}>{params.row.name}</a>
+          </div>
+        );
+      };
+    } else {
+      o.renderCell = (params) => {
+        console.log("YYYY:", params);
+        return (
+          <div
+            style={{
+              overflow: "auto",
+              lineHeight: "160%",
+              padding: 0,
+            }}
+          >
+            {typeof params.value == "object" && params.value != null
+              ? params.value.toString()
+              : params.value}
+          </div>
+        );
+      };
+    }
+    return o;
   });
 
   return (
-    <div style={{ height: 300, width: "100%" }}>
-      <DataGrid rows={rows} columns={columns} />
+    <div style={{ height: 480, width: "100%" }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        components={{
+          Toolbar: GridToolbar,
+        }}
+      />
     </div>
   );
 }
