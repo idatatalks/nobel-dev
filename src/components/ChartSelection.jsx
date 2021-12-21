@@ -3,6 +3,12 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 export function ChartSelection({ selection, onSetSelection }) {
+  const list = [
+    { value: "TotalWinnersByCountry", text: "Total Winners By Country" },
+    { value: "WinnersByCategory", text: "Winners By Category" },
+    { value: "WinnersByYear", text: "Winners By Year" },
+    { value: "WinnersByTable", text: "Winners By Table" },
+  ];
   const handleSelection = (event, newSelection) => {
     onSetSelection(newSelection);
   };
@@ -16,18 +22,15 @@ export function ChartSelection({ selection, onSetSelection }) {
         onChange={handleSelection}
         sx={{ textTransform: "none" }}
       >
-        <ToggleButton
-          value="TotalWinnersByCountry"
-          sx={{ textTransform: "none" }}
-        >
-          Total Winners By Country
-        </ToggleButton>
-        <ToggleButton value="WinnersByCategory" sx={{ textTransform: "none" }}>
-          Winners By Category
-        </ToggleButton>
-        <ToggleButton value="WinnersByYear" sx={{ textTransform: "none" }}>
-          Winners By Year
-        </ToggleButton>
+        {list.map((item, index) => (
+          <ToggleButton
+            key={index}
+            value={item.value}
+            sx={{ textTransform: "none" }}
+          >
+            {item.text}
+          </ToggleButton>
+        ))}
       </ToggleButtonGroup>
     </div>
   );

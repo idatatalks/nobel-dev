@@ -110,7 +110,7 @@ const CustomizedAxisTick = (props) => {
   );
 };
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }) => {
   //Don't display tooltip, but remaining the animation effect of bar selection
   return null;
 };
