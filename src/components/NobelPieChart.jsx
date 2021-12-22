@@ -1,5 +1,16 @@
-import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import {
+  getNobelNumPerCountry,
+  getDataByRadio,
+  COLOR_PALETTE,
+} from "../dataUtil";
 
 const RADIAN = Math.PI / 180;
 const margins = {
@@ -34,7 +45,14 @@ export const NobelPieChart = ({ data, dataKey, beginYear, endYear }) => {
           outerRadius={70}
           fill="#8884d8"
           label={renderCustomizedLabel}
-        />
+        >
+          {filteredData.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+            />
+          ))}
+        </Pie>
         <Tooltip
           contentStyle={{
             backgroundColor: "#f7efd2",
@@ -106,7 +124,12 @@ const CustomLegend = (props) => {
   return (
     <ul style={{ marginTop: 20 }}>
       {payload.map((entry, index) => (
-        <li key={`item-${index}`}>{data[entry.value].country}</li>
+        <li
+          key={`item-${index}`}
+          style={{ color: COLOR_PALETTE[index % COLOR_PALETTE.length] }}
+        >
+          {data[entry.value].country}
+        </li>
       ))}
     </ul>
   );

@@ -2,6 +2,7 @@ import {
   ComposedChart,
   BarChart,
   CartesianGrid,
+  Cell,
   XAxis,
   YAxis,
   Tooltip,
@@ -12,7 +13,11 @@ import {
   Brush,
 } from "recharts";
 
-import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
+import {
+  getNobelNumPerCountry,
+  getDataByRadio,
+  COLOR_PALETTE,
+} from "../dataUtil";
 
 const margins = {
   top: 20,
@@ -61,8 +66,8 @@ export const NobelBarChart = ({
             fontSize={20}
           />
           <YAxis hide={true} axisLine={false} tickLine={false} />
-          {/* <Tooltip content={<CustomTooltip />} /> */}
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
+          {/* <Tooltip /> */}
           <Legend
             name="Winners Rank By Country123"
             verticalAlign="top"
@@ -77,6 +82,12 @@ export const NobelBarChart = ({
             interval={30}
           >
             <LabelList dataKey={barDataKey} position="top" />
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+              />
+            ))}
           </Bar>
           {/* <Brush dataKey={xDataKey} height={30} y={-15} stroke="#8884d8" /> */}
         </BarChart>

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import * as d3 from "d3";
+import { COLOR_PALETTE } from "../dataUtil";
 import {
   CartesianGrid,
   Legend,
   ResponsiveContainer,
   Scatter,
+  Cell,
   ScatterChart,
   Tooltip,
   XAxis,
@@ -15,8 +17,12 @@ import {
 } from "recharts";
 
 const buildData = (data) => {
-  const sortedData = [...data].sort((a, b) => d3.ascending(a.year, b.year));
-  console.log("XXXXX dataPerYear:", sortedData);
+  const sortedData = [...data].sort(
+    (a, b) =>
+      d3.ascending(a.year, b.year) || d3.ascending(a.category, b.category)
+  );
+  console.log("XXXXX dataPerYear1:", sortedData);
+  console.log("XXXXX dataPerYear1:", data);
   const dataPerYear = d3.flatGroup(sortedData, (d) => d.year);
 
   dataPerYear.forEach(([year, data]) => {
@@ -25,19 +31,19 @@ const buildData = (data) => {
       d.index = i + 1;
     });
   });
-
+  console.log("XXXXX sorted category:", data.categories.slice().sort());
   sortedData.maxWinners = d3.max(dataPerYear, (d) => d[1].length);
   sortedData.yearNum =
     sortedData[sortedData.length - 1].year - sortedData[0].year + 1;
-  console.log("XXXXX dataPerYear:", dataPerYear);
+  console.log("XXXXX dataPerYear2:", dataPerYear);
   console.log("XXXXX sorted data:", sortedData);
-  return sortedData;
+  return [sortedData, data.categories.slice().sort()];
 };
 
 export const NobelPerYear = (props) => {
   console.log("NobelPerYear render!");
   const { data } = props;
-  const dataPerYear = buildData(data);
+  const [dataPerYear, categories] = buildData(data);
 
   const mark = {
     size: 10,
@@ -133,7 +139,18 @@ export const NobelPerYear = (props) => {
             name="Nobel winners per year"
             data={dataPerYear}
             fill="#8884d8"
-          />
+          >
+            {dataPerYear.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={((entry) => {
+                  let index = categories.indexOf(entry.category);
+                  console.log("YYY: index:", index, ",entry:", entry);
+                  return COLOR_PALETTE[index % COLOR_PALETTE.length];
+                })(entry)}
+              />
+            ))}
+          </Scatter>
         </ScatterChart>
       </ResponsiveContainer>
     </div>
@@ -142,7 +159,7 @@ export const NobelPerYear = (props) => {
 
 const CustomizedAxisTick = (props) => {
   const { x, y, payload, data, index } = props;
-  console.log("YYY:", props);
+  // console.log("YYY:", props);
   // const xlabels = Array.from(data.countries);
   // console.log(xlabels);
   // console.log(payload.value - 1, xlabels[payload.value - 1]);
@@ -165,13 +182,19 @@ const CustomizedAxisTick = (props) => {
 
 const CustomizedScatterShape = (props) => {
   const { x, y, winnerId, winnerY, countryId, interval, payload } = props;
-  console.log("YYY:", props);
+  // console.log("YYY:", props);
   const r = mark.size / 2;
   return (
     <g transform={`translate(${x},${y})`}>
       <circle cx={r} cy={r} r={r} fill="orange" />
     </g>
   );
+};
+
+const CustomizedScatterCell = (entry, index) => {
+  console.log("YYY: entry:", entry);
+  console.log("YYY: index:", index);
+  return COLOR_PALETTE[index % COLOR_PALETTE.length];
 };
 
 {

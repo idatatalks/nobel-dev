@@ -1,4 +1,28 @@
 import * as d3 from "d3";
+
+export const COLOR_PALETTE = [
+  "#0cc0aa",
+  "#4787c9",
+  "#fb0998",
+  "#59a20c",
+  "#7c08c5",
+  "#e0c645",
+  "#715cb6",
+  "#ef972d",
+  "#a57a6a",
+  "#c6c0fe",
+  "#ec9bfa",
+  "#421674",
+  "#b3e467",
+  "#5c190c",
+  "#55f17b",
+  "#c25357",
+  "#b9dcca",
+  "#29403b",
+  "#f4b8ab",
+  "#6a8b7b",
+];
+
 export async function fetchData(url) {
   const data = await fetch(url)
     .then((response) => {
@@ -112,7 +136,7 @@ export const buildChartData = (data) => {
   );
   filteredData.countryNum = filteredData.winnersByCountry.length;
   filteredData.year = data.filters.year;
-
+  filteredData.categories = data.filters.category;
   console.log("XXXXX chart data:", data);
   return data;
 };

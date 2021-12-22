@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
+import { COLOR_PALETTE } from "../dataUtil";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -53,7 +54,7 @@ export const WinnerNumByYear = ({ data }) => {
   const horizontalGap = 10;
   const margins = {
     top: 20,
-    right: 20,
+    right: 100,
     bottom: 30,
     left: 30,
   };
@@ -118,7 +119,18 @@ export const WinnerNumByYear = ({ data }) => {
             allowDataOverflow={true}
           />
           <YAxis />
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#f7efd2",
+              borderRadius: 10,
+              paddingTop: 2,
+              paddingBottom: 2,
+              paddingLeft: 10,
+              paddingRight: 10,
+            }}
+            content={<CustomTooltip />}
+            allowEscapeViewBox={{ x: false, y: false }}
+          />
           {data.countries.map((c, i) => (
             <Area
               key={i}
@@ -126,11 +138,36 @@ export const WinnerNumByYear = ({ data }) => {
               dataKey={c}
               stackId="1"
               stroke="#8884d8"
-              fill="#8884d8"
+              fill={COLOR_PALETTE[i % COLOR_PALETTE.length]}
             />
           ))}
         </AreaChart>
       </ResponsiveContainer>
     </div>
   );
+};
+
+const CustomTooltip = (props) => {
+  const { active, payload, label, contentStyle } = props;
+  console.log("Area tooltop:", props);
+
+  if (active && payload && payload.length) {
+    payload.filter((d) => d.value > 0);
+    // const index = payload[0].name;
+    // console.log("Pie index:", index);
+    // const { country, number, radio } = data[index];
+    return (
+      <div style={{ ...contentStyle }}>
+        <p>{`Year:${label}`}</p>
+        {payload
+          .sort((a, b) => b.value - a.value)
+          .filter((d) => d.value > 0)
+          .map((d, i) => {
+            return <p>{`${d.dataKey}:${d.value}`}</p>;
+          })}
+      </div>
+    );
+  }
+
+  return null;
 };
