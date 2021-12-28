@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import { COLOR_PALETTE } from "../dataUtil";
@@ -47,7 +48,7 @@ const buildData = (data) => {
   return sortedData;
 };
 
-export const WinnerNumByYear = ({ data }) => {
+const WinnerNumByYear = ({ data }) => {
   console.log("WinnerNumByYear render, data:", data);
   data = buildData(data);
 
@@ -83,66 +84,58 @@ export const WinnerNumByYear = ({ data }) => {
         overflow: "auto",
       }}
     >
-      <ResponsiveContainer
-        width={"100%"}
-        minWidth={1000}
-        style={{ overflow: "auto" }}
-        wrapperStyle={{ overflow: "auto" }}
+      <AreaChart
+        data={data}
+        style={{ border: "2px solid green" }}
+        margin={margins}
+        width={xAxisWidth}
         height={chartHeight}
       >
-        <AreaChart
-          data={data}
-          style={{ border: "2px solid green" }}
-          margin={margins}
-          width={xAxisWidth}
-          height={chartHeight}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            allowDuplicatedCategory={false}
-            dataKey={"year"}
-            type={"number"}
-            name={"year"}
-            domain={["dataMin", "dataMax"]}
-            interval={0}
-            tickCount={data.yearNum / 2 + 1}
-            angle={-90}
-            minTickGap={20}
-            tickMargin={25}
-            padding={horPaddings}
-            tick={{
-              textAnchor: "middle",
-              verticalAnchor: "end",
-              stroke: "red",
-              dx: -3,
-            }}
-            allowDataOverflow={true}
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          allowDuplicatedCategory={false}
+          dataKey={"year"}
+          type={"number"}
+          name={"year"}
+          domain={["dataMin", "dataMax"]}
+          interval={0}
+          tickCount={data.yearNum / 2 + 1}
+          angle={-90}
+          minTickGap={20}
+          tickMargin={25}
+          padding={horPaddings}
+          tick={{
+            textAnchor: "middle",
+            verticalAnchor: "end",
+            stroke: "red",
+            dx: -3,
+          }}
+          allowDataOverflow={true}
+        />
+        <YAxis />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: "#f7efd2",
+            borderRadius: 10,
+            paddingTop: 2,
+            paddingBottom: 2,
+            paddingLeft: 10,
+            paddingRight: 10,
+          }}
+          content={<CustomTooltip />}
+          allowEscapeViewBox={{ x: false, y: false }}
+        />
+        {data.countries.map((c, i) => (
+          <Area
+            key={i}
+            type="step"
+            dataKey={c}
+            stackId="1"
+            stroke="#8884d8"
+            fill={COLOR_PALETTE[i % COLOR_PALETTE.length]}
           />
-          <YAxis />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#f7efd2",
-              borderRadius: 10,
-              paddingTop: 2,
-              paddingBottom: 2,
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}
-            content={<CustomTooltip />}
-            allowEscapeViewBox={{ x: false, y: false }}
-          />
-          {data.countries.map((c, i) => (
-            <Area
-              key={i}
-              type="step"
-              dataKey={c}
-              stackId="1"
-              stroke="#8884d8"
-              fill={COLOR_PALETTE[i % COLOR_PALETTE.length]}
-            />
-          ))}
-        </AreaChart>
-      </ResponsiveContainer>
+        ))}
+      </AreaChart>
     </div>
   );
 };
@@ -163,7 +156,7 @@ const CustomTooltip = (props) => {
           .sort((a, b) => b.value - a.value)
           .filter((d) => d.value > 0)
           .map((d, i) => {
-            return <p>{`${d.dataKey}:${d.value}`}</p>;
+            return <p key={i}>{`${d.dataKey}:${d.value}`}</p>;
           })}
       </div>
     );
@@ -171,3 +164,5 @@ const CustomTooltip = (props) => {
 
   return null;
 };
+
+export default React.memo(WinnerNumByYear);

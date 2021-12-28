@@ -1,10 +1,10 @@
 import { Grid } from "@mui/material";
-import { NobelBarChart } from "./NobelBarChart";
-import { NobelPieChart } from "./NobelPieChart";
+import NobelBarChart from "./NobelBarChart";
+import NobelPieChart from "./NobelPieChart";
 import { NobelScatter } from "./NobelScatter";
-import { NobelPerYear } from "./NobelPerYear";
-import { WinnerNumByYear } from "./WinnerNumByYear";
-import { WinnersByTable } from "./WinnersByTable";
+import NobelPerYear from "./NobelPerYear";
+import WinnerNumByYear from "./WinnerNumByYear";
+import WinnersByTable from "./WinnersByTable";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
 import { useMemo } from "react";
@@ -64,7 +64,7 @@ const buildTableChart = (data) => {
 };
 
 export const NobelCharts = ({ data, selectedChart }) => {
-  console.log("DDD:", data);
+  console.log("NobelCharts render:", data);
   // const scatterData = buildScatterData(data);
   const nobelChart = () => {
     console.log("inside nobel chart:", data);
@@ -72,6 +72,7 @@ export const NobelCharts = ({ data, selectedChart }) => {
     const barchartData = useMemo(() => buildBarchartAndPieChart(data), [data]);
     const areachartData = useMemo(() => buildAreaChart(data), [data]);
     const tablechartData = useMemo(() => buildTableChart(data), [data]);
+    console.log("render tablechartData:", tablechartData);
 
     if (selectedChart == "WinnersByCategory") {
       return scatterData;

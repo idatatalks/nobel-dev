@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   ComposedChart,
   BarChart,
@@ -125,3 +126,5 @@ const CustomTooltip = ({ active, payload, label }) => {
   //Don't display tooltip, but remaining the animation effect of bar selection
   return null;
 };
+
+export default React.memo(NobelBarChart);

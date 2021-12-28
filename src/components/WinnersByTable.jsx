@@ -1,8 +1,8 @@
 import * as React from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
-export function WinnersByTable({ data }) {
-  console.log("WinnersByTable:", data);
+function WinnersByTable({ data }) {
+  console.log("WinnersByTable render:", data);
   const rows = data.map((d, i) => {
     d.id = i;
     return d;
@@ -30,7 +30,7 @@ export function WinnersByTable({ data }) {
       };
     } else {
       o.renderCell = (params) => {
-        console.log("YYYY:", params);
+        console.log("YYYYY:", params);
         return (
           <div
             style={{
@@ -61,3 +61,14 @@ export function WinnersByTable({ data }) {
     </div>
   );
 }
+
+function areEqual(prevProps, nextProps) {
+  console.log("Render: is data changed:", prevProps == nextProps);
+  return prevProps == nextProps;
+}
+
+// export default (() => {
+//   console.log("Test Memo");
+//   return React.memo(WinnersByTable, areEqual);
+// })();
+export default WinnersByTable;

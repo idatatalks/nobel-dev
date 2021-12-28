@@ -7,3 +7,8 @@
   width: 50vw;
   height: 50vh;
 }
+
+.recharts-responsive-container {
+  border: 2px solid red;
+  overflow: auto;
+}

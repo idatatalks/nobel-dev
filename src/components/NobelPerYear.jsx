@@ -40,7 +40,7 @@ const buildData = (data) => {
   return [sortedData, data.categories.slice().sort()];
 };
 
-export const NobelPerYear = (props) => {
+const NobelPerYear = (props) => {
   console.log("NobelPerYear render!");
   const { data } = props;
   const [dataPerYear, categories] = buildData(data);
@@ -56,7 +56,7 @@ export const NobelPerYear = (props) => {
     top: 20,
     right: 20,
     bottom: 30,
-    left: 30,
+    left: 0,
   };
   const horPaddings = { left: 10, right: 20 };
   const vertPaddings = { top: 10, bottom: 10 };
@@ -86,73 +86,66 @@ export const NobelPerYear = (props) => {
         overflow: "auto",
       }}
     >
-      <ResponsiveContainer
-        width={"100%"}
-        minWidth={1000}
-        style={{ overflow: "auto" }}
-        wrapperStyle={{ overflow: "auto" }}
+      <ScatterChart
+        style={{ border: "2px solid green" }}
+        margin={margins}
+        width={xAxisWidth}
         height={chartHeight}
+        minHeight={400}
       >
-        <ScatterChart
-          style={{ border: "2px solid green" }}
-          margin={margins}
-          width={xAxisWidth}
-          height={chartHeight}
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          allowDuplicatedCategory={false}
+          dataKey={"year"}
+          type={"number"}
+          name={"year"}
+          domain={["dataMin", "dataMax"]}
+          interval={0}
+          tickCount={dataPerYear.yearNum / 2 + 1}
+          angle={-90}
+          minTickGap={20}
+          tickMargin={25}
+          padding={horPaddings}
+          tick={{
+            textAnchor: "middle",
+            verticalAnchor: "end",
+            stroke: "red",
+            dx: -3,
+          }}
+          allowDataOverflow={true}
+        />
+        <YAxis
+          dataKey={"index"}
+          type={"number"}
+          name={"WinnerCount"}
+          interval={0}
+          tickCount={dataPerYear.maxWinners}
+          domain={["dataMin", "dataMax+2"]}
+          padding={vertPaddings}
+        />
+        <ZAxis type="number" range={[100, 100]} />
+        <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
+        <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+        {/* <Brush dataKey="year" height={30} stroke="#8884d8" /> */}
+        <Scatter
+          shape="circle"
+          legendType="triangle"
+          name="Nobel winners per year"
+          data={dataPerYear}
+          fill="#8884d8"
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            allowDuplicatedCategory={false}
-            dataKey={"year"}
-            type={"number"}
-            name={"year"}
-            domain={["dataMin", "dataMax"]}
-            interval={0}
-            tickCount={dataPerYear.yearNum / 2 + 1}
-            angle={-90}
-            minTickGap={20}
-            tickMargin={25}
-            padding={horPaddings}
-            tick={{
-              textAnchor: "middle",
-              verticalAnchor: "end",
-              stroke: "red",
-              dx: -3,
-            }}
-            allowDataOverflow={true}
-          />
-          <YAxis
-            dataKey={"index"}
-            type={"number"}
-            name={"WinnerCount"}
-            interval={0}
-            tickCount={dataPerYear.maxWinners}
-            domain={["dataMin", "dataMax+2"]}
-            padding={vertPaddings}
-          />
-          <ZAxis type="number" range={[100, 100]} />
-          <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
-          <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-          <Brush dataKey="year" height={30} stroke="#8884d8" />
-          <Scatter
-            shape="circle"
-            legendType="triangle"
-            name="Nobel winners per year"
-            data={dataPerYear}
-            fill="#8884d8"
-          >
-            {dataPerYear.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={((entry) => {
-                  let index = categories.indexOf(entry.category);
-                  console.log("YYY: index:", index, ",entry:", entry);
-                  return COLOR_PALETTE[index % COLOR_PALETTE.length];
-                })(entry)}
-              />
-            ))}
-          </Scatter>
-        </ScatterChart>
-      </ResponsiveContainer>
+          {dataPerYear.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={((entry) => {
+                let index = categories.indexOf(entry.category);
+                console.log("YYY: index:", index, ",entry:", entry);
+                return COLOR_PALETTE[index % COLOR_PALETTE.length];
+              })(entry)}
+            />
+          ))}
+        </Scatter>
+      </ScatterChart>
     </div>
   );
 };
@@ -197,6 +190,7 @@ const CustomizedScatterCell = (entry, index) => {
   return COLOR_PALETTE[index % COLOR_PALETTE.length];
 };
 
+export default React.memo(NobelPerYear);
 {
   /* <ScatterChart margin={margins}>
         <CartesianGrid strokeDasharray="3 3" />

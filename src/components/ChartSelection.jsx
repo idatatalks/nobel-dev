@@ -10,7 +10,9 @@ export function ChartSelection({ selection, onSetSelection }) {
     { value: "WinnersByTable", text: "Winners By Table" },
   ];
   const handleSelection = (event, newSelection) => {
-    onSetSelection(newSelection);
+    console.log("handleSelection event:", event);
+    console.log("handleSelection newSelection:", newSelection);
+    if (newSelection) onSetSelection(newSelection);
   };
 
   return (
