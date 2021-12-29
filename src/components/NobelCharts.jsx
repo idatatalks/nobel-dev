@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
-import NobelBarChart from "./NobelBarChart";
-import NobelPieChart from "./NobelPieChart";
+import WinnersByCountry from "./WinnersByCountry";
+import WinnersByRadio from "./WinnersByRadio";
 import { NobelScatter } from "./NobelScatter";
-import NobelPerYear from "./NobelPerYear";
-import WinnerNumByYear from "./WinnerNumByYear";
+import WinnersByCategory from "./WinnersByCategory";
+import WinnersByYear from "./WinnersByYear";
 import WinnersByTable from "./WinnersByTable";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
@@ -13,17 +13,17 @@ const buildScatter = (data) => {
   console.log("build ScatterChart:", data);
   return (
     <Grid item width={"100%"}>
-      <NobelPerYear data={data} />
+      <WinnersByCategory data={data} />
     </Grid>
   );
 };
 
 const buildBarchartAndPieChart = (data) => {
-  console.log("build barchartData:", data);
+  console.log("build barchart");
   return (
     <>
       <Grid item width={"75%"}>
-        <NobelBarChart
+        <WinnersByCountry
           data={data}
           xDataKey={"countryId"}
           xDataType={"number"}
@@ -34,12 +34,12 @@ const buildBarchartAndPieChart = (data) => {
         />
       </Grid>
       <Grid item width={"25%"}>
-        <NobelPieChart
+        <WinnersByRadio
           data={data}
           dataKey={"radio"}
           beginYear={data.year[0]}
           endYear={data.year[1]}
-        ></NobelPieChart>
+        ></WinnersByRadio>
       </Grid>
     </>
   );
@@ -49,7 +49,7 @@ const buildAreaChart = (data) => {
   console.log("build AreaChart");
   return (
     <Grid item width={"100%"}>
-      <WinnerNumByYear data={data} />
+      <WinnersByYear data={data} />
     </Grid>
   );
 };
@@ -65,7 +65,6 @@ const buildTableChart = (data) => {
 
 export const NobelCharts = ({ data, selectedChart }) => {
   console.log("NobelCharts render:", data);
-  // const scatterData = buildScatterData(data);
   const nobelChart = () => {
     console.log("inside nobel chart:", data);
     const scatterData = useMemo(() => buildScatter(data), [data]);

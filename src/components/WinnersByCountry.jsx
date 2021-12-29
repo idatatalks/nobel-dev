@@ -27,7 +27,7 @@ const margins = {
   left: 30,
 };
 
-export const NobelBarChart = ({
+export const WinnersByCountry = ({
   data,
   xDataKey,
   xDataType,
@@ -36,7 +36,7 @@ export const NobelBarChart = ({
   beginYear,
   endYear,
 }) => {
-  console.log("NobelBarChart render");
+  console.log("WinnersByCountry render");
   data = getNobelNumPerCountry(data);
   console.log("XXX barchartData:", data);
 
@@ -127,4 +127,4 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-export default React.memo(NobelBarChart);
+export default React.memo(WinnersByCountry);

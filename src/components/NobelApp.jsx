@@ -8,14 +8,14 @@ import {
   buildData,
   filterDataBySelection,
   getNobelNumPerCountry,
+  ChartDataUtil,
 } from "../dataUtil";
 import * as d3 from "d3";
 import { NobelViz } from "./NobelViz";
-import { NobelLineChart } from "./NobelLineChart";
 import { Menu } from "./Menu";
 import { NobelCharts } from "./NobelCharts";
 import { ChartSelection } from "./ChartSelection";
-
+const _ = require("lodash");
 const dataURL =
   "https://gist.githubusercontent.com/idatatalks/8612a9f89c444b82728473a545813789/raw/nobel_winners_cleaned.csv";
 
@@ -33,7 +33,7 @@ export const NobelApp = (props) => {
       .then((rawData) => {
         console.log("data parse start");
         rawData = d3.csvParse(rawData, d3.autoType);
-        const data = buildData(rawData);
+        const data = new ChartDataUtil(rawData);
         setData({ data, isDataLoaded: true });
         console.log("data parse end!");
       })
@@ -42,9 +42,9 @@ export const NobelApp = (props) => {
   }, []);
 
   const handleFilterChange = (filters) => {
-    const tmpData = filterDataBySelection(data, filters);
+    const tmpData = data.filterData(filters);
     console.log("PPPP:after filter change:", tmpData);
-    setData({ data: { ...tmpData }, isDataLoaded: true });
+    setData({ data: _.clone(tmpData), isDataLoaded: true });
   };
 
   const handleChartSelection = (newChart) => {

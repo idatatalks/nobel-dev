@@ -3,10 +3,10 @@ import "bootstrap/dist/css/bootstrap.css";
 
 class Navbar extends React.Component {
   constructor() {
-    super()
-    console.log("Navbar constructed.")
+    super();
+    console.log("Navbar constructed.");
   }
-  
+
   render() {
     console.log("NavBar:", this.props.counters);
     return (

@@ -21,8 +21,8 @@ const margins = {
   left: 5,
 };
 
-const NobelPieChart = ({ data, dataKey, beginYear, endYear }) => {
-  console.log("NobelPieChart render");
+const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
+  console.log("WinnersByRadio render");
   const filteredData = filterDataByRadio(data, 5);
   console.log("filtered pie data:", filteredData);
   return (
@@ -158,4 +158,4 @@ const filterDataByRadio = (data, minRadio) => {
   return filteredData;
 };
 
-export default React.memo(NobelPieChart);
+export default React.memo(WinnersByRadio);

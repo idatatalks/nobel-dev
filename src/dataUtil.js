@@ -32,7 +32,7 @@ export async function fetchData(url) {
     .catch((error) => {
       throw error;
     });
-  console.log("yyyy: data fetch complete!");
+  console.log("Data fetch complete!");
   return data;
   // try {
   //   let response = await fetch(url);
@@ -48,41 +48,48 @@ export async function fetchData(url) {
   // }
 }
 
-export const buildData = (rawData) => {
-  console.log(rawData);
-  const data = { rawData };
-  initOptions(data);
-  initFilters(data);
-  filterDataBySelection(data, data.filters);
-  console.log("options:", data.options);
-  console.log("filters:", data.filters);
+export class ChartDataUtil {
+  constructor(data) {
+    this._data = data;
+    this._initOptions();
+    this._initFilters();
+    this.filterData();
+  }
 
-  return data;
-};
+  get options() {
+    return this._options;
+  }
 
-const initOptions = (data) => {
-  const { rawData } = data;
-  const options = {};
-  options.countries = Array.from(
-    d3.group(rawData, (d) => d.country).keys()
+  get filters() {
+    return this._filters;
+  }
+
+  get filteredData() {
+    return this._filteredData;
+  }
+}
+
+ChartDataUtil.prototype._initOptions = function () {
+  this._options = {};
+  this._options.countries = Array.from(
+    d3.group(this._data, (d) => d.country).keys()
   ).sort();
-  options.categories = Array.from(d3.group(rawData, (d) => d.category).keys());
-  options.years = Array.from(d3.group(rawData, (d) => d.year).keys()).sort(
-    (a, b) => a - b
+  this._options.categories = Array.from(
+    d3.group(this._data, (d) => d.category).keys()
   );
-  options.genders = ["Male", "Female"];
-  data.options = options;
-  return data;
+  this._options.years = Array.from(
+    d3.group(this._data, (d) => d.year).keys()
+  ).sort((a, b) => a - b);
+  this._options.genders = ["Male", "Female"];
 };
 
-const initFilters = (data) => {
-  const { options, rawData } = data;
-  const filters = {};
-  filters.category = [...data.options.categories];
-  filters.gender = [...options.genders];
-  filters.country = d3
+ChartDataUtil.prototype._initFilters = function () {
+  this._filters = {};
+  this._filters.category = [...this._options.categories];
+  this._filters.gender = [...this._options.genders];
+  this._filters.country = d3
     .rollups(
-      rawData,
+      this._data,
       (v) => v.length,
       (d) => d.country
     )
@@ -90,55 +97,50 @@ const initFilters = (data) => {
     .slice(0, 10)
     .map((d) => d[0])
     .concat(["China", "India"]);
-  filters.year = [options.years[0], options.years.at(-1)];
-  data.filters = filters;
-  return data;
+  this._filters.year = [this._options.years[0], this._options.years.at(-1)];
 };
 
-export const filterDataBySelection = (data, newFilter) => {
-  data.filters = newFilter;
-  const { filters } = data;
-  console.log("Before filter, data:", data);
-  const filteredData = data.rawData.filter(
-    (d) =>
-      d.year >= filters.year[0] &&
-      d.year <= filters.year[1] &&
-      filters.country.find(
-        (item) => item.toLowerCase() == d.country.toLowerCase()
-      ) &&
-      filters.category.find(
-        (item) => item.toLowerCase() == d.category.toLowerCase()
-      ) &&
-      filters.gender.find(
-        (item) => item.toLowerCase() == d.gender.toLowerCase()
-      )
-  );
-  data.filteredData = filteredData;
-  console.log("XXXXX after filter:", data);
-  buildChartData(data);
-  return data;
-};
-
-export const buildChartData = (data) => {
-  const { filteredData } = data;
-  filteredData.winnersByCountry = d3
+ChartDataUtil.prototype._buildChartData = function () {
+  this._filteredData.winnersByCountry = d3
     .flatRollup(
-      filteredData,
+      this._filteredData,
       (v) => v.length,
       (d) => d.country
     )
     .sort((a, b) => d3.descending(a[1], b[1]));
 
-  filteredData.maxWinners = filteredData.winnersByCountry[0];
-  filteredData.sumWinners = d3.sum(
-    filteredData.winnersByCountry,
+  this._filteredData.maxWinners = this._filteredData.winnersByCountry[0];
+  this._filteredData.sumWinners = d3.sum(
+    this._filteredData.winnersByCountry,
     ([k, v]) => v
   );
-  filteredData.countryNum = filteredData.winnersByCountry.length;
-  filteredData.year = data.filters.year;
-  filteredData.categories = data.filters.category;
-  console.log("XXXXX chart data:", data);
-  return data;
+  this._filteredData.countryNum = this._filteredData.winnersByCountry.length;
+  this._filteredData.year = this._filters.year;
+  this._filteredData.categories = this._filters.category;
+};
+
+ChartDataUtil.prototype.filterData = function (filters = null) {
+  if (filters) this._filters = filters;
+  console.log("Before filter, filters:", filters);
+  console.log("Before filter, data:", this);
+  this._filteredData = this._data.filter(
+    (d) =>
+      d.year >= this._filters.year[0] &&
+      d.year <= this._filters.year[1] &&
+      this._filters.country.find(
+        (item) => item.toLowerCase() == d.country.toLowerCase()
+      ) &&
+      this._filters.category.find(
+        (item) => item.toLowerCase() == d.category.toLowerCase()
+      ) &&
+      this._filters.gender.find(
+        (item) => item.toLowerCase() == d.gender.toLowerCase()
+      )
+  );
+
+  this._buildChartData();
+  console.log("After filter, data:", this);
+  return this;
 };
 
 export const getNobelNumPerCountry = (filter) => {

@@ -48,8 +48,8 @@ const buildData = (data) => {
   return sortedData;
 };
 
-const WinnerNumByYear = ({ data }) => {
-  console.log("WinnerNumByYear render, data:", data);
+const WinnersByYear = ({ data }) => {
+  console.log("WinnersByYear render, data:", data);
   data = buildData(data);
 
   const horizontalGap = 10;
@@ -165,4 +165,4 @@ const CustomTooltip = (props) => {
   return null;
 };
 
-export default React.memo(WinnerNumByYear);
+export default React.memo(WinnersByYear);

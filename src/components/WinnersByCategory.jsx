@@ -40,8 +40,8 @@ const buildData = (data) => {
   return [sortedData, data.categories.slice().sort()];
 };
 
-const NobelPerYear = (props) => {
-  console.log("NobelPerYear render!");
+const WinnersByCategory = (props) => {
+  console.log("WinnersByCategory render!");
   const { data } = props;
   const [dataPerYear, categories] = buildData(data);
 
@@ -190,7 +190,7 @@ const CustomizedScatterCell = (entry, index) => {
   return COLOR_PALETTE[index % COLOR_PALETTE.length];
 };
 
-export default React.memo(NobelPerYear);
+export default React.memo(WinnersByCategory);
 {
   /* <ScatterChart margin={margins}>
         <CartesianGrid strokeDasharray="3 3" />

@@ -10,6 +10,9 @@ export const Menu = ({ data, onSetFilter }) => {
     sx: { width: "100%", maxWidth: "100%" },
   };
 
+  console.log("Menu rendering, data:", data);
+  console.log("data options:", data.options);
+
   return (
     <Grid
       container
