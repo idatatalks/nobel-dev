@@ -20,7 +20,7 @@ const MenuProps = {
   },
 };
 
-export const CategoryFilter = ({
+export const FilterSelect = ({
   data,
   label,
   options,

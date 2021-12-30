@@ -1,8 +1,8 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
 import { useState } from "react";
-import { CategoryFilter } from "./MenuFiltersItems/CategoryFilter";
-import SliderYear from "./MenuFiltersItems/SliderYear";
+import { FilterSelect } from "./MenuFiltersItems/FilterSelect";
+import { FilterSlide } from "./MenuFiltersItems/FilterSlide";
 
 const MenuFilters = ({ data, onSetFilter }) => {
   console.log("Menu rendering");
@@ -31,7 +31,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
         xl={2}
         sx={{ border: "2px solid red" }}
       >
-        <CategoryFilter
+        <FilterSelect
           {...{
             ...commonConfig,
             label: "Category",
@@ -49,7 +49,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
         xl={1}
         sx={{ border: "2px solid red" }}
       >
-        <CategoryFilter
+        <FilterSelect
           {...{
             ...commonConfig,
             label: "Gender",
@@ -67,7 +67,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
         xl={3}
         sx={{ border: "2px solid red" }}
       >
-        <CategoryFilter
+        <FilterSelect
           {...{
             ...commonConfig,
             label: "Country",
@@ -85,7 +85,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
         xl={6}
         sx={{ border: "2px solid red" }}
       >
-        <SliderYear
+        <FilterSlide
           {...{
             ...commonConfig,
             range: data.filters.year,

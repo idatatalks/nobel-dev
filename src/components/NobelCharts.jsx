@@ -62,11 +62,12 @@ const buildTableChart = (data) => {
 
 export const NobelCharts = ({ data, selectedChart }) => {
   console.log("NobelCharts render:", data);
+  const scatterData = useMemo(() => buildScatter(data), [data]);
+  const barchartData = useMemo(() => buildBarchartAndPieChart(data), [data]);
+  const areachartData = useMemo(() => buildAreaChart(data), [data]);
+  const tablechartData = useMemo(() => buildTableChart(data), [data]);
+
   const buildNobelChart = () => {
-    const scatterData = useMemo(() => buildScatter(data), [data]);
-    const barchartData = useMemo(() => buildBarchartAndPieChart(data), [data]);
-    const areachartData = useMemo(() => buildAreaChart(data), [data]);
-    const tablechartData = useMemo(() => buildTableChart(data), [data]);
     const chartList = {
       WinnersByCategory: scatterData,
       WinnersByCountry: barchartData,

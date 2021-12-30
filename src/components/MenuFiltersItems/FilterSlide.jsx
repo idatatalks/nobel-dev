@@ -1,14 +1,18 @@
-import { useState } from "react";
 import { Paper, Slider } from "@mui/material";
+import { useState } from "react";
 
-export default function SliderYear(props) {
+export function FilterSlide(props) {
   const { range, onSetFilter, data, min, max } = props;
-  // const [yearRange, updateYearRange] = useState([min, max]);
+  const [value, setValue] = useState(range);
   const handleSliderChange = (event, newValue) => {
     console.log("On Slider Change:", newValue);
-    // updateYearRange(newValue);
+    setValue(newValue);
+  };
+  const handleSliderCommitChange = (event, newValue) => {
+    console.log("On Slider Commit Change:", newValue);
     onSetFilter({ ...data.filters, year: newValue });
   };
+
   return (
     <Paper
       elevation={10}
@@ -20,14 +24,15 @@ export default function SliderYear(props) {
     >
       <Slider
         defaultValue={range}
-        value={range}
-        onChangeCommitted={handleSliderChange}
+        value={value}
+        onChange={handleSliderChange}
+        onChangeCommitted={handleSliderCommitChange}
         valueLabelDisplay="on"
         min={min}
         max={max}
         step={1}
         marks
-        // sx={{ m: 5 }}
+        disableSwap
       ></Slider>
     </Paper>
   );

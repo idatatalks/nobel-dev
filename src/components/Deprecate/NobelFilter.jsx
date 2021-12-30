@@ -1,6 +1,6 @@
 import { Grid, Box } from "@mui/material";
 import GroupCheckBox from "../GroupCheckBox";
-import SliderYear from "./SliderYear";
+import FilterSlide from "./FilterSlide";
 
 export const NobelFilter = (props) => {
   const { data, category, gender, countries } = props;
@@ -51,7 +51,7 @@ export const NobelFilter = (props) => {
           />
         </Grid>
         <Grid item xs={8} sm={8} md={8} lg={8} xl={8}>
-          <SliderYear min={1960} max={2021} />
+          <FilterSlide min={1960} max={2021} />
         </Grid>
       </Grid>
     </Box>
