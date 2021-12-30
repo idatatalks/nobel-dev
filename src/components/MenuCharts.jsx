@@ -1,16 +1,18 @@
+import * as React from "react";
 import { useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-export function ChartSelection({ selection, onSetSelection }) {
-  const list = [
-    { value: "TotalWinnersByCountry", text: "Total Winners By Country" },
-    { value: "WinnersByCategory", text: "Winners By Category" },
-    { value: "WinnersByYear", text: "Winners By Year" },
-    { value: "WinnersByTable", text: "Winners By Table" },
-  ];
+const chartList = [
+  { value: "WinnersByCountry", text: "Winners By Country" },
+  { value: "WinnersByCategory", text: "Winners By Category" },
+  { value: "WinnersByYear", text: "Winners By Year" },
+  { value: "WinnersByTable", text: "Winners By Table" },
+];
+
+function MenuCharts({ selection, onSetSelection }) {
+  console.log("MenuCharts render");
   const handleSelection = (event, newSelection) => {
-    console.log("handleSelection event:", event);
     console.log("handleSelection newSelection:", newSelection);
     if (newSelection) onSetSelection(newSelection);
   };
@@ -24,7 +26,7 @@ export function ChartSelection({ selection, onSetSelection }) {
         onChange={handleSelection}
         sx={{ textTransform: "none" }}
       >
-        {list.map((item, index) => (
+        {chartList.map((item, index) => (
           <ToggleButton
             key={index}
             value={item.value}
@@ -37,3 +39,5 @@ export function ChartSelection({ selection, onSetSelection }) {
     </div>
   );
 }
+
+export default React.memo(MenuCharts);

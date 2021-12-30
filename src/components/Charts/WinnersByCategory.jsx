@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import * as d3 from "d3";
-import { COLOR_PALETTE } from "../dataUtil";
+import { COLOR_PALETTE } from "../../dataUtil";
 import {
   CartesianGrid,
   Legend,

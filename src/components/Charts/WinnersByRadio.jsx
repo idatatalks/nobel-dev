@@ -8,10 +8,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import {
-  getNobelNumPerCountry,
-  getDataByRadio,
+  getNumByCountry,
+  getRadioByCountry,
   COLOR_PALETTE,
-} from "../dataUtil";
+} from "../../dataUtil";
 
 const RADIAN = Math.PI / 180;
 const margins = {
@@ -138,9 +138,9 @@ const CustomLegend = (props) => {
 };
 
 const filterDataByRadio = (data, minRadio) => {
-  data = getNobelNumPerCountry(data);
+  data = getNumByCountry(data);
   console.log("barchartData:", data);
-  data = getDataByRadio(data);
+  data = getRadioByCountry(data);
 
   console.log("XXXXXX, RAW data:", data);
   let totalNum = data.reduce((acc, c) => acc + c.number, 0);

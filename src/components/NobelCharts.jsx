@@ -1,13 +1,10 @@
 import { Grid } from "@mui/material";
-import WinnersByCountry from "./WinnersByCountry";
-import WinnersByRadio from "./WinnersByRadio";
-import { NobelScatter } from "./NobelScatter";
-import WinnersByCategory from "./WinnersByCategory";
-import WinnersByYear from "./WinnersByYear";
-import WinnersByTable from "./WinnersByTable";
-import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
-import { getNobelNumPerCountry, getDataByRadio } from "../dataUtil";
 import { useMemo } from "react";
+import WinnersByCountry from "./Charts/WinnersByCountry";
+import WinnersByRadio from "./Charts/WinnersByRadio";
+import WinnersByCategory from "./Charts/WinnersByCategory";
+import WinnersByYear from "./Charts/WinnersByYear";
+import WinnersByTable from "./Charts/WinnersByTable";
 
 const buildScatter = (data) => {
   console.log("build ScatterChart:", data);
@@ -65,26 +62,20 @@ const buildTableChart = (data) => {
 
 export const NobelCharts = ({ data, selectedChart }) => {
   console.log("NobelCharts render:", data);
-  const nobelChart = () => {
-    console.log("inside nobel chart:", data);
+  const buildNobelChart = () => {
     const scatterData = useMemo(() => buildScatter(data), [data]);
     const barchartData = useMemo(() => buildBarchartAndPieChart(data), [data]);
     const areachartData = useMemo(() => buildAreaChart(data), [data]);
     const tablechartData = useMemo(() => buildTableChart(data), [data]);
-    console.log("render tablechartData:", tablechartData);
-
-    if (selectedChart == "WinnersByCategory") {
-      return scatterData;
-    } else if (selectedChart == "TotalWinnersByCountry") {
-      return barchartData;
-    } else if (selectedChart == "WinnersByYear") {
-      return areachartData;
-    } else if (selectedChart == "WinnersByTable") {
-      return tablechartData;
-    }
+    const chartList = {
+      WinnersByCategory: scatterData,
+      WinnersByCountry: barchartData,
+      WinnersByYear: areachartData,
+      WinnersByTable: tablechartData,
+    };
+    return chartList[selectedChart];
   };
 
-  // const refinedNobelChart = useMemo(() => nobelChart(data), [data]);
   return (
     <Grid
       container
@@ -96,7 +87,7 @@ export const NobelCharts = ({ data, selectedChart }) => {
       wrap="wrap"
       marginTop={2}
     >
-      {nobelChart()}
+      {buildNobelChart()}
     </Grid>
   );
 };

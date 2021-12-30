@@ -1,20 +1,10 @@
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState, useCallback } from "react";
 import * as React from "react";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import { NobelFilter } from "./NobelFilter";
-import {
-  fetchData,
-  buildData,
-  filterDataBySelection,
-  getNobelNumPerCountry,
-  ChartDataUtil,
-} from "../dataUtil";
+import { fetchData, ChartDataUtil } from "../dataUtil";
 import * as d3 from "d3";
-import { NobelViz } from "./NobelViz";
-import { Menu } from "./Menu";
+import MenuFilters from "./MenuFilters";
 import { NobelCharts } from "./NobelCharts";
-import { ChartSelection } from "./ChartSelection";
+import MenuCharts from "./MenuCharts";
 const _ = require("lodash");
 const dataURL =
   "https://gist.githubusercontent.com/idatatalks/8612a9f89c444b82728473a545813789/raw/nobel_winners_cleaned.csv";
@@ -24,51 +14,45 @@ export const NobelApp = (props) => {
     data: null,
     isDataLoaded: false,
   });
-  const [chart, setChart] = useState("TotalWinnersByCountry");
-  // const [filter, setFilter] = useState(null);
-  // const [isDataLoaded, setisDataLoaded] = useState(false);
+  const [chart, setChart] = useState("WinnersByCountry");
+
   useEffect(() => {
-    console.log("first effect start");
+    console.log("Data fetch start");
     fetchData(dataURL)
       .then((rawData) => {
-        console.log("data parse start");
+        console.log("Data parse start");
         rawData = d3.csvParse(rawData, d3.autoType);
         const data = new ChartDataUtil(rawData);
         setData({ data, isDataLoaded: true });
-        console.log("data parse end!");
+        console.log("Data parse end!");
       })
-      .catch((error) => console.log("out: ", error));
-    console.log("first effect end!");
+      .catch((error) => console.log("Data fetch failed due to => ", error));
+    console.log("Data fetch end!");
   }, []);
 
-  const handleFilterChange = (filters) => {
-    const tmpData = data.filterData(filters);
-    console.log("PPPP:after filter change:", tmpData);
-    setData({ data: _.clone(tmpData), isDataLoaded: true });
-  };
+  const handleFilterChange = useCallback(
+    (filters) => {
+      setData({ data: _.clone(data.filterData(filters)), isDataLoaded: true });
+    },
+    [data]
+  );
 
-  const handleChartSelection = (newChart) => {
-    console.log("handleChartSelection is clicked on:", newChart);
+  const handleMenuCharts = useCallback((newChart) => {
+    console.log("Chart:", newChart, " is selected.");
     setChart(newChart);
-  };
+  }, []);
 
-  console.log("rendering!");
+  console.log("NobelApp rendering:", data, " active chart:", chart);
+
   if (!isDataLoaded) {
-    return <h1>Loading data, please be patient or try again!</h1>;
+    return <h1>Loading data...... please be patient or try again!</h1>;
   }
-  console.log("FFF:", data);
+
   return (
     <>
-      <Menu data={data} onSetFilter={handleFilterChange} />
-      <ChartSelection selection={chart} onSetSelection={handleChartSelection} />
+      <MenuFilters data={data} onSetFilter={handleFilterChange} />
+      <MenuCharts selection={chart} onSetSelection={handleMenuCharts} />
       <NobelCharts data={data.filteredData} selectedChart={chart} />
-      {/* <NobelViz data={data.filteredData} isDataLoaded={isDataLoaded}></NobelViz> */}
-      {/* <NobelFilter
-        data={data}
-        category={data.categories}
-        gender={data.genders}
-        countries={data.countries}
-      ></NobelFilter> */}
     </>
   );
 };

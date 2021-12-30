@@ -1,17 +1,16 @@
 import { Grid } from "@mui/material";
+import * as React from "react";
 import { useState } from "react";
-import { CategoryFilter } from "./CategoryFilter";
-import SliderYear from "./SliderYear";
+import { CategoryFilter } from "./MenuFiltersItems/CategoryFilter";
+import SliderYear from "./MenuFiltersItems/SliderYear";
 
-export const Menu = ({ data, onSetFilter }) => {
+const MenuFilters = ({ data, onSetFilter }) => {
+  console.log("Menu rendering");
   const commonConfig = {
     data,
     onSetFilter,
     sx: { width: "100%", maxWidth: "100%" },
   };
-
-  console.log("Menu rendering, data:", data);
-  console.log("data options:", data.options);
 
   return (
     <Grid
@@ -98,3 +97,5 @@ export const Menu = ({ data, onSetFilter }) => {
     </Grid>
   );
 };
+
+export default React.memo(MenuFilters);

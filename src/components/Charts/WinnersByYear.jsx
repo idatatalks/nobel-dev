@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Button } from "@mui/material";
-import { COLOR_PALETTE } from "../dataUtil";
+import { COLOR_PALETTE } from "../../dataUtil";
 import {
   ResponsiveContainer,
   AreaChart,

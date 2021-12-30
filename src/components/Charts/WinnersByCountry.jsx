@@ -15,10 +15,10 @@ import {
 } from "recharts";
 
 import {
-  getNobelNumPerCountry,
-  getDataByRadio,
+  getNumByCountry,
+  getRadioByCountry,
   COLOR_PALETTE,
-} from "../dataUtil";
+} from "../../dataUtil";
 
 const margins = {
   top: 20,
@@ -37,7 +37,7 @@ export const WinnersByCountry = ({
   endYear,
 }) => {
   console.log("WinnersByCountry render");
-  data = getNobelNumPerCountry(data);
+  data = getNumByCountry(data);
   console.log("XXX barchartData:", data);
 
   const minXTickGap = 50;

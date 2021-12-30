@@ -143,7 +143,7 @@ ChartDataUtil.prototype.filterData = function (filters = null) {
   return this;
 };
 
-export const getNobelNumPerCountry = (filter) => {
+export const getNumByCountry = (filter) => {
   return filter.winnersByCountry.map((d, i) => ({
     country: d[0],
     number: d[1],
@@ -151,12 +151,11 @@ export const getNobelNumPerCountry = (filter) => {
   }));
 };
 
-export const getDataByRadio = (data) => {
+export const getRadioByCountry = (data) => {
   let sum = data.reduce((sum, d) => sum + d.number, 0);
   data.forEach((d) => {
     d.radio = (d.number * 100) / sum;
     // d.radio = `${((d.number * 100) / sum).toFixed(0)}%`;
   });
-  console.log("Radio:", data);
   return data;
 };
