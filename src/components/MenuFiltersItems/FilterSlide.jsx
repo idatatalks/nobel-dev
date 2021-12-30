@@ -17,9 +17,9 @@ export function FilterSlide(props) {
     <Paper
       elevation={10}
       sx={{
+        border: "2px solid green",
         textAlign: "center",
-        margin: "auto",
-        p: 5,
+        pt: 5,
       }}
     >
       <Slider

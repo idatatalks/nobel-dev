@@ -18,7 +18,9 @@ function MenuCharts({ selection, onSetSelection }) {
   };
 
   return (
-    <div style={{ border: "2px solid green", textAlign: "center" }}>
+    <div
+      style={{ border: "2px solid green", textAlign: "center", marginTop: 10 }}
+    >
       <ToggleButtonGroup
         color="primary"
         value={selection}
