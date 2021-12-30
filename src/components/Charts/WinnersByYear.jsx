@@ -10,6 +10,7 @@ import {
   YAxis,
   Tooltip,
   Area,
+  Legend,
 } from "recharts";
 import * as d3 from "d3";
 
@@ -125,13 +126,25 @@ const WinnersByYear = ({ data }) => {
           content={<CustomTooltip />}
           allowEscapeViewBox={{ x: false, y: false }}
         />
+        <Legend
+          layout="horizontal"
+          align="left"
+          verticalAlign="top"
+          iconType="rect"
+          wrapperStyle={{
+            paddingLeft: 60,
+            paddingBottom: 10,
+            border: "2px solid green",
+            width: "50%",
+          }}
+        />
         {data.countries.map((c, i) => (
           <Area
             key={i}
             type="step"
             dataKey={c}
             stackId="1"
-            stroke="#8884d8"
+            stroke={COLOR_PALETTE[i % COLOR_PALETTE.length]}
             fill={COLOR_PALETTE[i % COLOR_PALETTE.length]}
           />
         ))}
@@ -146,9 +159,7 @@ const CustomTooltip = (props) => {
 
   if (active && payload && payload.length) {
     payload.filter((d) => d.value > 0);
-    // const index = payload[0].name;
-    // console.log("Pie index:", index);
-    // const { country, number, radio } = data[index];
+
     return (
       <div style={{ ...contentStyle }}>
         <p>{`Year:${label}`}</p>
@@ -156,7 +167,12 @@ const CustomTooltip = (props) => {
           .sort((a, b) => b.value - a.value)
           .filter((d) => d.value > 0)
           .map((d, i) => {
-            return <p key={i}>{`${d.dataKey}:${d.value}`}</p>;
+            return (
+              <p
+                key={i}
+                style={{ color: d.fill }}
+              >{`${d.dataKey}:${d.value}`}</p>
+            );
           })}
       </div>
     );

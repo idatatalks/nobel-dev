@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import React from "react";
 import * as d3 from "d3";
 import { COLOR_PALETTE } from "../../dataUtil";
@@ -13,8 +12,23 @@ import {
   XAxis,
   YAxis,
   ZAxis,
-  Brush,
 } from "recharts";
+
+const mark = {
+  size: 10,
+  width: 10,
+  height: 15,
+};
+
+const horizontalGap = 10;
+const margins = {
+  top: 20,
+  right: 20,
+  bottom: 30,
+  left: 0,
+};
+const horPaddings = { left: 10, right: 20 };
+const vertPaddings = { top: 10, bottom: 10 };
 
 const buildData = (data) => {
   const sortedData = [...data].sort(
@@ -26,7 +40,6 @@ const buildData = (data) => {
   const dataPerYear = d3.flatGroup(sortedData, (d) => d.year);
 
   dataPerYear.forEach(([year, data]) => {
-    //   console.log("yyyy:", year, " data:", data);
     data.forEach((d, i) => {
       d.index = i + 1;
     });
@@ -45,22 +58,6 @@ const WinnersByCategory = (props) => {
   const { data } = props;
   const [dataPerYear, categories] = buildData(data);
 
-  const mark = {
-    size: 10,
-    width: 10,
-    height: 15,
-  };
-
-  const horizontalGap = 10;
-  const margins = {
-    top: 20,
-    right: 20,
-    bottom: 30,
-    left: 0,
-  };
-  const horPaddings = { left: 10, right: 20 };
-  const vertPaddings = { top: 10, bottom: 10 };
-
   const chartHeight =
     mark.height * 1.2 * dataPerYear.maxWinners +
     margins.top +
@@ -75,8 +72,13 @@ const WinnersByCategory = (props) => {
     margins.left +
     margins.right;
 
-  console.log("XXX Chart height:", chartHeight);
-  console.log("XXX xAxisWidth:", xAxisWidth);
+  console.log(
+    "WinnersByCategory Chart height:",
+    chartHeight,
+    " xAxisWidth:",
+    xAxisWidth
+  );
+
   return (
     <div
       style={{
@@ -124,114 +126,43 @@ const WinnersByCategory = (props) => {
           padding={vertPaddings}
         />
         <ZAxis type="number" range={[100, 100]} />
-        <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
+        <Legend
+          layout="horizontal"
+          align="left"
+          verticalAlign="top"
+          wrapperStyle={{
+            paddingLeft: 60,
+            paddingBottom: 10,
+            border: "2px solid green",
+            width: "50%",
+          }}
+        />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        {/* <Brush dataKey="year" height={30} stroke="#8884d8" /> */}
-        <Scatter
-          shape="circle"
-          legendType="triangle"
-          name="Nobel winners per year"
-          data={dataPerYear}
-          fill="#8884d8"
-        >
-          {dataPerYear.map((entry, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={((entry) => {
-                let index = categories.indexOf(entry.category);
-                console.log("YYY: index:", index, ",entry:", entry);
-                return COLOR_PALETTE[index % COLOR_PALETTE.length];
-              })(entry)}
-            />
-          ))}
-        </Scatter>
+        {categories.map((category, index) => {
+          const categoryData = dataPerYear.filter(
+            (d) => d.category == category
+          );
+          console.log("fff category:", categoryData);
+          return (
+            <Scatter
+              shape="circle"
+              legendType="circle"
+              name={category}
+              data={categoryData}
+              fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+            >
+              {categoryData.map((entry, i) => (
+                <Cell
+                  key={`cell-${i}`}
+                  fill={COLOR_PALETTE[index % COLOR_PALETTE.length]}
+                />
+              ))}
+            </Scatter>
+          );
+        })}
       </ScatterChart>
     </div>
   );
 };
 
-const CustomizedAxisTick = (props) => {
-  const { x, y, payload, data, index } = props;
-  // console.log("YYY:", props);
-  // const xlabels = Array.from(data.countries);
-  // console.log(xlabels);
-  // console.log(payload.value - 1, xlabels[payload.value - 1]);
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={0}
-        y={0}
-        dx={-5}
-        dy={0}
-        textAnchor="end"
-        fill="#666"
-        transform="rotate(-90)"
-      >
-        {payload.value}
-      </text>
-    </g>
-  );
-};
-
-const CustomizedScatterShape = (props) => {
-  const { x, y, winnerId, winnerY, countryId, interval, payload } = props;
-  // console.log("YYY:", props);
-  const r = mark.size / 2;
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <circle cx={r} cy={r} r={r} fill="orange" />
-    </g>
-  );
-};
-
-const CustomizedScatterCell = (entry, index) => {
-  console.log("YYY: entry:", entry);
-  console.log("YYY: index:", index);
-  return COLOR_PALETTE[index % COLOR_PALETTE.length];
-};
-
 export default React.memo(WinnersByCategory);
-{
-  /* <ScatterChart margin={margins}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          allowDuplicatedCategory={false}
-          dataKey={"year"}
-          type={"number"}
-          name={"year"}
-          data={dataPerYear}
-          angle={90}
-          dx={-50}
-          interval={0}
-          padding={horPaddings}
-          allowDataOverflow={false}
-          tickCount={dataPerYear.length}
-          tick={<CustomizedAxisTick data={dataPerYear} />}
-          domain={["dataMin", "dataMax"]}
-        />
-        <YAxis
-          dataKey={"winnerId"}
-          type={"number"}
-          name={"WinnerCount"}
-          domain={["auto", "dataMax"]}
-          dy={0}
-          padding={vertPaddings}
-          interval={0}
-          tickCount={dataPerYear.maxWinners}
-          fontSize={10}
-          // domain={["dataMin-10", "dataMax+10"]}
-        />
-        <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
-        <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-        <Scatter
-          shape="cross"
-          legendType="triangle"
-          dx={10}
-          dy={10}
-          name="Nobel winners per year"
-          data={dataPerYear}
-          fill="#8884d8"
-          shape={<CustomizedScatterShape />}
-        />
-      </ScatterChart> */
-}
