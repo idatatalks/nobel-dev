@@ -7,8 +7,10 @@ import MenuCharts from "./MenuCharts";
 import { NobelCharts } from "./NobelCharts";
 
 const _ = require("lodash");
-const dataURL =
-  "https://gist.githubusercontent.com/idatatalks/8612a9f89c444b82728473a545813789/raw/nobel_winners_cleaned.csv";
+// const dataURL =
+//   "https://gist.githubusercontent.com/idatatalks/8612a9f89c444b82728473a545813789/raw/nobel_winners_cleaned.csv";
+
+const dataURL = "nobel_winners_cleaned.csv";
 
 export const NobelApp = (props) => {
   const [{ data, isDataLoaded }, setData] = useState({
@@ -21,7 +23,7 @@ export const NobelApp = (props) => {
     console.log("Data fetch start");
     fetchData(dataURL)
       .then((rawData) => {
-        console.log("Data parse start");
+        console.log("Data parse start, rawData:", rawData);
         rawData = d3.csvParse(rawData, d3.autoType);
         const data = new ChartDataUtil(rawData);
         setData({ data, isDataLoaded: true });
