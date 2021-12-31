@@ -52,7 +52,7 @@ export const FilterSelect = ({
   };
   return (
     <>
-      <FormControl sx={{ ...sx }}>
+      <FormControl sx={{ ...sx, border: "2px solid green" }}>
         <InputLabel id={labelId}>{label}</InputLabel>
         <Select
           labelId={labelId}
@@ -60,12 +60,25 @@ export const FilterSelect = ({
           multiple
           value={selectedOptions}
           onChange={handleChange}
+          classes={{
+            select: {
+              fontSize: "small",
+              margin: "100px 200px",
+              border: "4px solid cyan",
+              color: "green",
+            },
+          }}
           input={<OutlinedInput label={label} />}
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
+          sx={{ fontSize: "small", fontWeight: 900 }}
         >
           {options.map((option) => (
-            <MenuItem key={option} value={option}>
+            <MenuItem
+              key={option}
+              value={option}
+              sx={{ fontSize: "small", border: "2px solid green" }}
+            >
               <Checkbox checked={selectedOptions.includes(option)} />
               <ListItemText primary={option} />
             </MenuItem>

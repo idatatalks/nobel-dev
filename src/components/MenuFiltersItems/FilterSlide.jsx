@@ -19,7 +19,8 @@ export function FilterSlide(props) {
       sx={{
         border: "2px solid green",
         textAlign: "center",
-        pt: 5,
+        pt: 2,
+        px: 3,
       }}
     >
       <Slider
@@ -33,6 +34,7 @@ export function FilterSlide(props) {
         step={1}
         marks
         disableSwap
+        sx={{ border: "2px solid yellow", mt: 0 }}
       ></Slider>
     </Paper>
   );

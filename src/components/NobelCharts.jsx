@@ -14,12 +14,24 @@ const buildScatter = (data) => {
     </Grid>
   );
 };
-
+// sx={{ xs: 12, sm: 12, md: 12, lg: 4, xl: 4 }}
 const buildBarchartAndPieChart = (data) => {
   console.log("build barchart");
   return (
     <>
-      <Grid item width={"75%"}>
+      <Grid
+        item
+        sx={{
+          width: { xs: "100%", sm: "100%", md: "100%", lg: "75%", xl: "75%" },
+          maxWidth: {
+            xs: "100%",
+            sm: "100%",
+            md: "100%",
+            lg: "75%",
+            xl: "75%",
+          },
+        }}
+      >
         <WinnersByCountry
           data={data}
           xDataKey={"countryId"}
@@ -30,7 +42,19 @@ const buildBarchartAndPieChart = (data) => {
           endYear={data.year[1]}
         />
       </Grid>
-      <Grid item width={"25%"}>
+      <Grid
+        item
+        sx={{
+          width: { xs: "100%", sm: "100%", md: "100%", lg: "25%", xl: "25%" },
+          maxWidth: {
+            xs: "100%",
+            sm: "100%",
+            md: "100%",
+            lg: "25%",
+            xl: "25%",
+          },
+        }}
+      >
         <WinnersByRadio
           data={data}
           dataKey={"radio"}
@@ -83,7 +107,7 @@ export const NobelCharts = ({ data, selectedChart }) => {
       direction="row"
       columnSpacing={2}
       rowSpacing={2}
-      justifyContent="center"
+      justifyContent="space-between"
       alignItems="center"
       wrap="wrap"
       marginTop={2}

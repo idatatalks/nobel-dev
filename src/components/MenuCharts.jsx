@@ -26,13 +26,17 @@ function MenuCharts({ selection, onSetSelection }) {
         value={selection}
         exclusive
         onChange={handleSelection}
-        sx={{ textTransform: "none" }}
+        sx={{
+          textTransform: "none",
+          justifyContent: "center",
+          flexWrap: "wrap",
+        }}
       >
         {chartList.map((item, index) => (
           <ToggleButton
             key={index}
             value={item.value}
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", fontSize: "large" }}
           >
             {item.text}
           </ToggleButton>
