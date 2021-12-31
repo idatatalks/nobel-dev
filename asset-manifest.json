@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/nobelstory/static/css/main.0cb02ed8.chunk.css",
+    "main.js": "/nobelstory/static/js/main.8061d1d8.chunk.js",
+    "main.js.map": "/nobelstory/static/js/main.8061d1d8.chunk.js.map",
+    "runtime-main.js": "/nobelstory/static/js/runtime-main.a0a49f27.js",
+    "runtime-main.js.map": "/nobelstory/static/js/runtime-main.a0a49f27.js.map",
+    "static/js/2.41c18257.chunk.js": "/nobelstory/static/js/2.41c18257.chunk.js",
+    "static/js/2.41c18257.chunk.js.map": "/nobelstory/static/js/2.41c18257.chunk.js.map",
+    "index.html": "/nobelstory/index.html",
+    "static/css/main.0cb02ed8.chunk.css.map": "/nobelstory/static/css/main.0cb02ed8.chunk.css.map",
+    "static/js/2.41c18257.chunk.js.LICENSE.txt": "/nobelstory/static/js/2.41c18257.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a0a49f27.js",
+    "static/js/2.41c18257.chunk.js",
+    "static/css/main.0cb02ed8.chunk.css",
+    "static/js/main.8061d1d8.chunk.js"
+  ]
+}
