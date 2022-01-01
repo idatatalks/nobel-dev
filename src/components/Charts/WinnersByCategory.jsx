@@ -84,12 +84,10 @@ const WinnersByCategory = (props) => {
       style={{
         width: "100%",
         height: chartHeight + 20,
-        border: "2px solid black",
         overflow: "auto",
       }}
     >
       <ScatterChart
-        style={{ border: "2px solid green" }}
         margin={margins}
         width={xAxisWidth}
         height={chartHeight}
@@ -111,7 +109,6 @@ const WinnersByCategory = (props) => {
           tick={{
             textAnchor: "middle",
             verticalAnchor: "end",
-            stroke: "red",
             dx: -3,
           }}
           allowDataOverflow={true}
@@ -133,7 +130,6 @@ const WinnersByCategory = (props) => {
           wrapperStyle={{
             paddingLeft: 60,
             paddingBottom: 10,
-            border: "2px solid green",
             width: "50%",
           }}
         />

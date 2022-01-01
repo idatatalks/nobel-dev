@@ -19,7 +19,7 @@ function MenuCharts({ selection, onSetSelection }) {
 
   return (
     <div
-      style={{ border: "2px solid green", textAlign: "center", marginTop: 10 }}
+      style={{ textAlign: "center", marginTop: 10 }}
     >
       <ToggleButtonGroup
         color="primary"
