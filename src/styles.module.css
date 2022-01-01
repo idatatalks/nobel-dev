@@ -1,0 +1,28 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.ScatterPlot {
+  width: 50vw;
+  height: 50vh;
+}
+
+.recharts-responsive-container {
+  overflow: auto;
+}
+
+.MyToggleButton {
+  margin-left: 0px;
+
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.MuiToggleButtonGroup-grouped
+  .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  margin-left: 0px;
+  border-color: yellow;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

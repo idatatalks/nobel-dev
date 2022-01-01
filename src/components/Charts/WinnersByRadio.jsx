@@ -10,6 +10,7 @@ import {
 import {
   getNumByCountry,
   getRadioByCountry,
+  COLOR_TITLE,
   COLOR_PALETTE,
 } from "../../dataUtil";
 
@@ -33,7 +34,13 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
       minHeight={500}
     >
       <PieChart margin={margins}>
-        <text x={150} y={30} fill="#666" fontSize={20} textAnchor="middle">
+        <text
+          x={150}
+          y={30}
+          fill={COLOR_TITLE}
+          fontSize={20}
+          textAnchor="middle"
+        >
           Winners Percentage By Country
           <tspan x={120} y={50}>
             ({beginYear}~{endYear})
@@ -74,17 +81,8 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
 };
 
 const renderCustomizedLabel = (props) => {
-  const {
-    x,
-    y,
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    percent,
-    index,
-  } = props;
+  const { x, y, cx, cy, midAngle, innerRadius, outerRadius, percent, index } =
+    props;
   console.log("Pie label:", props);
 
   return (
@@ -109,7 +107,7 @@ const CustomTooltip = (props) => {
     console.log("Pie index:", index);
     const { country, number, radio } = data[index];
     return (
-      <div style={{ ...contentStyle }}>
+      <div style={{ ...contentStyle, color: COLOR_TITLE }}>
         <p>{`Percentage: ${radio.toFixed(0)}%`}</p>
         <p>{`Number: ${number}`}</p>
         <p>{`Country: ${country}`}</p>

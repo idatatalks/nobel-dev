@@ -161,7 +161,7 @@ const CustomizedAxisTick = (props) => {
         dx={-5}
         dy={0}
         textAnchor="end"
-        fill="#666"
+        fill=COLOR_TITLE
         transform="rotate(-90)"
       >
         {data.winnersByCountry[payload.value][0]}

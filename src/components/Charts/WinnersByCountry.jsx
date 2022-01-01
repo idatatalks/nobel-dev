@@ -11,7 +11,7 @@ import {
   LabelList,
 } from "recharts";
 
-import { getNumByCountry, COLOR_PALETTE } from "../../dataUtil";
+import { getNumByCountry, COLOR_TITLE, COLOR_PALETTE } from "../../dataUtil";
 
 const margins = {
   top: 80,
@@ -60,7 +60,7 @@ export const WinnersByCountry = ({
           <Bar
             name={`Nobel winners by country(${beginYear}~${endYear})`}
             dataKey={barDataKey}
-            fill="#666"
+            fill={COLOR_TITLE}
             legendType="square"
             interval={30}
           >
@@ -91,7 +91,7 @@ const CustomizedAxisTick = (props) => {
         dx={-5}
         dy={0}
         textAnchor="end"
-        fill="#666"
+        fill={COLOR_TITLE}
         transform="rotate(-90)"
       >
         {data[payload.value - 1].country}

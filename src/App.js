@@ -4,9 +4,9 @@ import {
   LineChart,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
 } from "recharts";
-import "./styles.css";
+import "./styles.module.css";
 // import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 const data = [{ name: "Page A", uv: 400, pv: 2400, amt: 2400 }];
 

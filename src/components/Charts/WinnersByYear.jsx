@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Button } from "@mui/material";
-import { COLOR_PALETTE } from "../../dataUtil";
+import { COLOR_TITLE, COLOR_PALETTE } from "../../dataUtil";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -158,7 +158,7 @@ const CustomTooltip = (props) => {
 
     return (
       <div style={{ ...contentStyle }}>
-        <p>{`Year:${label}`}</p>
+        <p style={{ color: COLOR_TITLE }}>{`Year:${label}`}</p>
         {payload
           .sort((a, b) => b.value - a.value)
           .filter((d) => d.value > 0)

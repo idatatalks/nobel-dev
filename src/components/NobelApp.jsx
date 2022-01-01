@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import MenuFilters from "./MenuFilters";
 import MenuCharts from "./MenuCharts";
 import { NobelCharts } from "./NobelCharts";
-
+import "../styles.module.css";
 const _ = require("lodash");
 // const dataURL =
 //   "https://gist.githubusercontent.com/idatatalks/8612a9f89c444b82728473a545813789/raw/nobel_winners_cleaned.csv";

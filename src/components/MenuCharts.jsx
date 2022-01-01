@@ -18,10 +18,9 @@ function MenuCharts({ selection, onSetSelection }) {
   };
 
   return (
-    <div
-      style={{ textAlign: "center", marginTop: 10 }}
-    >
+    <div style={{ textAlign: "center", marginTop: 10 }}>
       <ToggleButtonGroup
+        root
         color="primary"
         value={selection}
         exclusive
@@ -30,13 +29,31 @@ function MenuCharts({ selection, onSetSelection }) {
           textTransform: "none",
           justifyContent: "center",
           flexWrap: "wrap",
+          ".MuiToggleButtonGroup-grouped .MuiToggleButtonGroup-grouped:not(:first-of-type)":
+            {
+              marginLeft: "0px",
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+            },
         }}
       >
         {chartList.map((item, index) => (
           <ToggleButton
             key={index}
             value={item.value}
-            sx={{ textTransform: "none", fontSize: "large" }}
+            classes={{ root: { border: "2px solid yellow" } }}
+            sx={{
+              textTransform: "none",
+              fontSize: "large",
+              m: 0,
+              p: 0,
+              border: "2px solid green",
+              "& .MuiToggleButtonGroup-grouped": {
+                marginLeft: "0px",
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+              },
+            }}
           >
             {item.text}
           </ToggleButton>

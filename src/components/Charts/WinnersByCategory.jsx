@@ -1,6 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
-import { COLOR_PALETTE } from "../../dataUtil";
+import { COLOR_TITLE, COLOR_PALETTE } from "../../dataUtil";
 import {
   CartesianGrid,
   Legend,
@@ -133,7 +133,19 @@ const WinnersByCategory = (props) => {
             width: "50%",
           }}
         />
-        <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+        <Tooltip
+          cursor={{ strokeDasharray: "3 3" }}
+          contentStyle={{
+            backgroundColor: "#f7efd2",
+            borderRadius: 10,
+            paddingTop: 2,
+            paddingBottom: 2,
+            paddingLeft: 10,
+            paddingRight: 10,
+          }}
+          content={<CustomTooltip categories={categories} />}
+          allowEscapeViewBox={{ x: false, y: false }}
+        />
         {categories.map((category, index) => {
           const categoryData = dataPerYear.filter(
             (d) => d.category == category
@@ -159,6 +171,28 @@ const WinnersByCategory = (props) => {
       </ScatterChart>
     </div>
   );
+};
+
+const CustomTooltip = (props) => {
+  const { active, payload, label, contentStyle, categories } = props;
+  if (active && payload && payload.length) {
+    console.log("Scatter tooltop:", props);
+    const { year, country, category, name } = payload[0].payload;
+    const index = categories.indexOf(category);
+    const color = COLOR_PALETTE[index % COLOR_PALETTE.length];
+    console.log("index:", index);
+    console.log("categories:", category);
+    return (
+      <div style={{ ...contentStyle, color: color }}>
+        <p>{`Year:${year}`}</p>
+        <p>{`Category:${category}`}</p>
+        <p>{`Country:${country}`}</p>
+        <p>{`Name:${name}`}</p>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default React.memo(WinnersByCategory);

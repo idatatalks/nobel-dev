@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 
+export const COLOR_TITLE = "#666";
 export const COLOR_PALETTE = [
   "#0cc0aa",
   "#4787c9",
