@@ -24,7 +24,7 @@ export const COLOR_PALETTE = [
 ];
 
 export async function fetchData(url) {
-  console.log("URL:", url)
+  console.log("URL:", url);
   const data = await fetch(url)
     .then((response) => {
       if (!response.ok) throw new Error(response.statusText);
@@ -85,6 +85,7 @@ ChartDataUtil.prototype._initOptions = function () {
 };
 
 ChartDataUtil.prototype._initFilters = function () {
+  const len = this._options.years.length - 1;
   this._filters = {};
   this._filters.category = [...this._options.categories];
   this._filters.gender = [...this._options.genders];
@@ -98,7 +99,7 @@ ChartDataUtil.prototype._initFilters = function () {
     .slice(0, 10)
     .map((d) => d[0])
     .concat(["China", "India"]);
-  this._filters.year = [this._options.years[0], this._options.years.at(-1)];
+  this._filters.year = [this._options.years[0], this._options.years[len]];
 };
 
 ChartDataUtil.prototype._buildChartData = function () {

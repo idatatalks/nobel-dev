@@ -11,7 +11,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
     onSetFilter,
     sx: { width: "100%", maxWidth: "100%" },
   };
-
+  const arrLenOfYear = data.options.years.length - 1;
   return (
     <Grid
       container
@@ -90,7 +90,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
             ...commonConfig,
             range: data.filters.year,
             min: data.options.years[0],
-            max: data.options.years.at(-1),
+            max: data.options.years[arrLenOfYear],
           }}
         />
       </Grid>
