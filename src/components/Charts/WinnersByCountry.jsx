@@ -39,11 +39,7 @@ export const WinnersByCountry = ({
   return (
     <>
       <ResponsiveContainer width={"100%"} minWidth={minWidth} height={600}>
-        <BarChart
-          data={data}
-          margin={margins}
-          style={{ /*overflow: "auto", */ border: "2px solid red" }}
-        >
+        <BarChart data={data} margin={margins}>
           <XAxis
             dataKey={xDataKey}
             tick={<CustomizedAxisTick data={data} />}
@@ -59,14 +55,13 @@ export const WinnersByCountry = ({
             align="center"
             verticalAlign="middle"
             height={36}
-            wrapperStyle={{ top: 5, paddingTop: 0, border: "2px solid cyan" }}
+            wrapperStyle={{ top: 3, paddingTop: 2, fontSize: 20 }}
           />
           <Bar
             name={`Nobel winners by country(${beginYear}~${endYear})`}
             dataKey={barDataKey}
-            fill="green"
-            style={{ border: "2px solid yellow" }}
-            wrapperStyle={{ border: "2px solid yellow" }}
+            fill="#666"
+            legendType="square"
             interval={30}
           >
             <LabelList dataKey={barDataKey} position="top" />

@@ -81,13 +81,11 @@ const WinnersByYear = ({ data }) => {
       style={{
         width: "100%",
         height: chartHeight + 20,
-        border: "2px solid black",
         overflow: "auto",
       }}
     >
       <AreaChart
         data={data}
-        style={{ border: "2px solid green" }}
         margin={margins}
         width={xAxisWidth}
         height={chartHeight}
@@ -108,7 +106,6 @@ const WinnersByYear = ({ data }) => {
           tick={{
             textAnchor: "middle",
             verticalAnchor: "end",
-            stroke: "red",
             dx: -3,
           }}
           allowDataOverflow={true}
@@ -134,7 +131,6 @@ const WinnersByYear = ({ data }) => {
           wrapperStyle={{
             paddingLeft: 60,
             paddingBottom: 10,
-            border: "2px solid green",
             width: "50%",
           }}
         />

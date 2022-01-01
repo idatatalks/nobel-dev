@@ -8,7 +8,6 @@ export const NobelFilter = (props) => {
     <Box
       sx={{
         width: "100%",
-        border: "2px solid green",
         paddingRight: 0,
         marginRight: 0,
       }}
@@ -22,7 +21,7 @@ export const NobelFilter = (props) => {
         rowSpacing={2}
         sx={{
           width: "100%",
-          border: "2px solid red",
+         
           paddingRight: 0,
           marginRight: 0,
         }}

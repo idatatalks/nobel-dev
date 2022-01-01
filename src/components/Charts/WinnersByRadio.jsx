@@ -18,7 +18,7 @@ const margins = {
   top: 30,
   right: 5,
   bottom: 100,
-  left: 5,
+  left: 40,
 };
 
 const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
@@ -32,8 +32,8 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
       height={600}
       minHeight={500}
     >
-      <PieChart margin={margins} style={{ border: "2px solid red" }}>
-        <text x={120} y={30} fill="#666" textAnchor="middle">
+      <PieChart margin={margins}>
+        <text x={150} y={30} fill="#666" fontSize={20} textAnchor="middle">
           Winners Percentage By Country
           <tspan x={120} y={50}>
             ({beginYear}~{endYear})

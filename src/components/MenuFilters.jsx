@@ -21,16 +21,9 @@ const MenuFilters = ({ data, onSetFilter }) => {
       justifyContent="center"
       alignItems="center"
       wrap="wrap"
+      mt={1}
     >
-      <Grid
-        item
-        xs={8}
-        sm={4}
-        md={4}
-        lg={2}
-        xl={2}
-        sx={{ border: "2px solid red" }}
-      >
+      <Grid item xs={8} sm={4} md={4} lg={2} xl={2}>
         <FilterSelect
           {...{
             ...commonConfig,
@@ -40,15 +33,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
           }}
         />
       </Grid>
-      <Grid
-        item
-        xs={4}
-        sm={2}
-        md={2}
-        lg={1}
-        xl={1}
-        sx={{ border: "2px solid red" }}
-      >
+      <Grid item xs={4} sm={2} md={2} lg={1} xl={1}>
         <FilterSelect
           {...{
             ...commonConfig,
@@ -58,15 +43,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
           }}
         />
       </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        md={6}
-        lg={3}
-        xl={3}
-        sx={{ border: "2px solid red" }}
-      >
+      <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
         <FilterSelect
           {...{
             ...commonConfig,
@@ -76,15 +53,7 @@ const MenuFilters = ({ data, onSetFilter }) => {
           }}
         />
       </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={10}
-        md={10}
-        lg={6}
-        xl={6}
-        sx={{ border: "2px solid red" }}
-      >
+      <Grid item xs={12} sm={10} md={10} lg={6} xl={6}>
         <FilterSlide
           {...{
             ...commonConfig,
