@@ -10,6 +10,7 @@ import {
 import {
   getNumByCountry,
   getRadioByCountry,
+  COLOR_TOOLTIP_BACKGROUND,
   COLOR_TITLE,
   COLOR_PALETTE,
 } from "../../dataUtil";
@@ -25,7 +26,7 @@ const margins = {
 const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
   console.log("WinnersByRadio render");
   const filteredData = filterDataByRadio(data, 5);
-  console.log("filtered pie data:", filteredData);
+  console.log("WinnersByRadio - filtered pie data:", filteredData);
   return (
     <ResponsiveContainer
       width={"100%"}
@@ -33,7 +34,7 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
       height={600}
       minHeight={500}
     >
-      <PieChart margin={margins}>
+      <PieChart margin={margins} style={{ border: "2px solid green" }}>
         <text
           x={150}
           y={30}
@@ -52,7 +53,6 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
           cx={120}
           cy={150}
           outerRadius={70}
-          fill="#8884d8"
           label={renderCustomizedLabel}
         >
           {filteredData.map((entry, index) => (
@@ -64,7 +64,7 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
         </Pie>
         <Tooltip
           contentStyle={{
-            backgroundColor: "#f7efd2",
+            backgroundColor: { COLOR_TOOLTIP_BACKGROUND },
             borderRadius: 10,
             paddingTop: 2,
             paddingBottom: 2,
@@ -81,8 +81,17 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
 };
 
 const renderCustomizedLabel = (props) => {
-  const { x, y, cx, cy, midAngle, innerRadius, outerRadius, percent, index } =
-    props;
+  const {
+    x,
+    y,
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  } = props;
   console.log("Pie label:", props);
 
   return (
@@ -120,7 +129,7 @@ const CustomTooltip = (props) => {
 
 const CustomLegend = (props) => {
   const { data, payload } = props;
-  console.log("xxx legend:", props);
+  console.log("WinnersByRadio legend:", props);
   return (
     <ul style={{ marginTop: 20 }}>
       {payload.map((entry, index) => (
@@ -137,14 +146,10 @@ const CustomLegend = (props) => {
 
 const filterDataByRadio = (data, minRadio) => {
   data = getNumByCountry(data);
-  console.log("barchartData:", data);
   data = getRadioByCountry(data);
 
-  console.log("XXXXXX, RAW data:", data);
   let totalNum = data.reduce((acc, c) => acc + c.number, 0);
-  console.log("XXXXXX, RAW data total num:", totalNum);
   let filteredData = data.filter((d) => d.radio >= minRadio);
-  console.log("XXXXXX, filtered data:", filteredData);
   let othersRadio = 100 - filteredData.reduce((acc, c) => acc + c.radio, 0);
   let totalFilteredNum = filteredData.reduce((acc, c) => acc + c.number, 0);
   filteredData.push({

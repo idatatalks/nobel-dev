@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 
 export const COLOR_TITLE = "#666";
+export const COLOR_TOOLTIP_BACKGROUND = "#f7efd2";
 export const COLOR_PALETTE = [
   "#0cc0aa",
   "#4787c9",
@@ -36,18 +37,6 @@ export async function fetchData(url) {
     });
   console.log("Data fetch complete!");
   return data;
-  // try {
-  //   let response = await fetch(url);
-  //   if (!response.ok) {
-  //     throw new Error(response.statusText);
-  //   }
-  //   let text = await response.text();
-  //   // console.log(text);
-  //   return text;
-  // } catch (error) {
-  //   console.log("handleError:", error);
-  //   throw error;
-  // }
 }
 
 export class ChartDataUtil {

@@ -40,10 +40,7 @@ export const FilterSelect = ({
       target: { value },
     } = event;
     const newValue = typeof value === "string" ? value.split(",") : value;
-    setSelectedOptions(
-      // On autofill we get a the stringified value.
-      newValue
-    );
+    setSelectedOptions(newValue);
     console.log("new filter:", {
       ...data.filters,
       [label.toLowerCase()]: newValue,

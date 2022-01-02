@@ -1,9 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import { Button } from "@mui/material";
-import { COLOR_TITLE, COLOR_PALETTE } from "../../dataUtil";
 import {
-  ResponsiveContainer,
+  COLOR_TOOLTIP_BACKGROUND,
+  COLOR_TITLE,
+  COLOR_PALETTE,
+} from "../../dataUtil";
+import {
   AreaChart,
   CartesianGrid,
   XAxis,
@@ -16,8 +18,8 @@ import * as d3 from "d3";
 
 const buildData = (data) => {
   const countries = data.winnersByCountry.map((d) => d[0]);
-  console.log("XXXXX country:", countries);
-  console.log("XXXXX data:", data);
+  console.log("WinnersByYear country:", countries);
+
   let sortedData = d3
     .flatRollup(
       [...data],
@@ -30,30 +32,27 @@ const buildData = (data) => {
   sortedData = d3
     .flatGroup(sortedData, (d) => d[0])
     .map((d) => [d[0], d[1].map((d) => [d[1], d[2]])]);
-  console.log("XXXXX sortedData1:", sortedData);
 
   sortedData = sortedData.map((d) => {
     const o = { year: d[0] };
     countries.forEach((c) => {
       const obj = Object.fromEntries(d[1]);
-      // console.log("XXXX: obj:", obj);
       obj.hasOwnProperty(c) ? (o[c] = obj[c]) : (o[c] = 0);
     });
     return o;
   });
-  console.log("XXXXX sortedData2:", sortedData);
+
   sortedData.countries = countries;
   sortedData.yearNum =
     sortedData[sortedData.length - 1].year - sortedData[0].year + 1;
-  console.log("XXXXX sorted data:", sortedData);
+  console.log("WinnersByYear sorted data:", sortedData);
   return sortedData;
 };
 
 const WinnersByYear = ({ data }) => {
-  console.log("WinnersByYear render, data:", data);
+  console.log("WinnersByYear render");
   data = buildData(data);
 
-  const horizontalGap = 10;
   const margins = {
     top: 20,
     right: 100,
@@ -73,8 +72,12 @@ const WinnersByYear = ({ data }) => {
     margins.left +
     margins.right;
 
-  console.log("XXX Chart height:", chartHeight);
-  console.log("XXX xAxisWidth:", xAxisWidth);
+  console.log(
+    "WinnersByYear Chart height:",
+    chartHeight,
+    " xAxisWidth:",
+    xAxisWidth
+  );
 
   return (
     <div
@@ -113,7 +116,7 @@ const WinnersByYear = ({ data }) => {
         <YAxis />
         <Tooltip
           contentStyle={{
-            backgroundColor: "#f7efd2",
+            backgroundColor: { COLOR_TOOLTIP_BACKGROUND },
             borderRadius: 10,
             paddingTop: 2,
             paddingBottom: 2,

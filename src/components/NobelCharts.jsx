@@ -14,7 +14,7 @@ const buildScatter = (data) => {
     </Grid>
   );
 };
-// sx={{ xs: 12, sm: 12, md: 12, lg: 4, xl: 4 }}
+
 const buildBarchartAndPieChart = (data) => {
   console.log("build barchart");
   return (

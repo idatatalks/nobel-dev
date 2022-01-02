@@ -1,10 +1,9 @@
 import React from "react";
 import * as d3 from "d3";
-import { COLOR_TITLE, COLOR_PALETTE } from "../../dataUtil";
+import { COLOR_TOOLTIP_BACKGROUND, COLOR_PALETTE } from "../../dataUtil";
 import {
   CartesianGrid,
   Legend,
-  ResponsiveContainer,
   Scatter,
   Cell,
   ScatterChart,
@@ -20,7 +19,6 @@ const mark = {
   height: 15,
 };
 
-const horizontalGap = 10;
 const margins = {
   top: 20,
   right: 20,
@@ -35,21 +33,19 @@ const buildData = (data) => {
     (a, b) =>
       d3.ascending(a.year, b.year) || d3.ascending(a.category, b.category)
   );
-  console.log("XXXXX dataPerYear1:", sortedData);
-  console.log("XXXXX dataPerYear1:", data);
-  const dataPerYear = d3.flatGroup(sortedData, (d) => d.year);
 
+  const dataPerYear = d3.flatGroup(sortedData, (d) => d.year);
   dataPerYear.forEach(([year, data]) => {
     data.forEach((d, i) => {
       d.index = i + 1;
     });
   });
-  console.log("XXXXX sorted category:", data.categories.slice().sort());
+
   sortedData.maxWinners = d3.max(dataPerYear, (d) => d[1].length);
   sortedData.yearNum =
     sortedData[sortedData.length - 1].year - sortedData[0].year + 1;
-  console.log("XXXXX dataPerYear2:", dataPerYear);
-  console.log("XXXXX sorted data:", sortedData);
+
+  console.log("WinnersByCategory sorted data:", sortedData);
   return [sortedData, data.categories.slice().sort()];
 };
 
@@ -136,7 +132,7 @@ const WinnersByCategory = (props) => {
         <Tooltip
           cursor={{ strokeDasharray: "3 3" }}
           contentStyle={{
-            backgroundColor: "#f7efd2",
+            backgroundColor: { COLOR_TOOLTIP_BACKGROUND },
             borderRadius: 10,
             paddingTop: 2,
             paddingBottom: 2,
@@ -150,7 +146,6 @@ const WinnersByCategory = (props) => {
           const categoryData = dataPerYear.filter(
             (d) => d.category == category
           );
-          console.log("fff category:", categoryData);
           return (
             <Scatter
               shape="circle"
@@ -180,8 +175,6 @@ const CustomTooltip = (props) => {
     const { year, country, category, name } = payload[0].payload;
     const index = categories.indexOf(category);
     const color = COLOR_PALETTE[index % COLOR_PALETTE.length];
-    console.log("index:", index);
-    console.log("categories:", category);
     return (
       <div style={{ ...contentStyle, color: color }}>
         <p>{`Year:${year}`}</p>

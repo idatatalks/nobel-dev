@@ -1,14 +1,13 @@
 import * as React from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Button } from "@mui/material";
 
 function WinnersByTable({ data }) {
-  console.log("WinnersByTable render:", data);
+  console.log("WinnersByTable render");
   const rows = data.map((d, i) => {
     d.id = i;
     return d;
   });
-  console.log("WinnersByTable:", data[0]);
+  console.log("WinnersByTable data:", data[0]);
   const columns = Object.entries(data[0]).map((d) => {
     let o = { field: d[0], headerName: d[0], width: 150, fluid: 1 };
     if (d[0] == "id") {
@@ -16,7 +15,6 @@ function WinnersByTable({ data }) {
     }
     if (d[0] == "link") {
       o.renderCell = (params) => {
-        console.log("YYYY:", params);
         return (
           <div
             style={{
@@ -31,7 +29,6 @@ function WinnersByTable({ data }) {
       };
     } else {
       o.renderCell = (params) => {
-        console.log("YYYYY:", params);
         return (
           <div
             style={{
@@ -68,8 +65,4 @@ function areEqual(prevProps, nextProps) {
   return prevProps == nextProps;
 }
 
-// export default (() => {
-//   console.log("Test Memo");
-//   return React.memo(WinnersByTable, areEqual);
-// })();
 export default WinnersByTable;
