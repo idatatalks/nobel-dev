@@ -34,7 +34,7 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
       height={600}
       minHeight={500}
     >
-      <PieChart margin={margins} style={{ border: "2px solid green" }}>
+      <PieChart margin={margins}>
         <text
           x={150}
           y={30}
