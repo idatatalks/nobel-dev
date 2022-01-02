@@ -29,12 +29,6 @@ function MenuCharts({ selection, onSetSelection }) {
           textTransform: "none",
           justifyContent: "center",
           flexWrap: "wrap",
-          ".MuiToggleButtonGroup-grouped .MuiToggleButtonGroup-grouped:not(:first-of-type)":
-            {
-              marginLeft: "0px",
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
-            },
         }}
       >
         {chartList.map((item, index) => (
@@ -43,16 +37,11 @@ function MenuCharts({ selection, onSetSelection }) {
             value={item.value}
             classes={{ root: { border: "2px solid yellow" } }}
             sx={{
+              boxShadow: 2,
               textTransform: "none",
               fontSize: "large",
               m: 0,
-              p: 0,
-              border: "2px solid green",
-              "& .MuiToggleButtonGroup-grouped": {
-                marginLeft: "0px",
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-              },
+              p: 1,
             }}
           >
             {item.text}
