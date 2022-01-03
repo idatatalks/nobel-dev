@@ -20,7 +20,6 @@ function MenuCharts({ selection, onSetSelection }) {
   return (
     <div style={{ textAlign: "center", marginTop: 10 }}>
       <ToggleButtonGroup
-        root
         color="primary"
         value={selection}
         exclusive

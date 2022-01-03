@@ -132,7 +132,7 @@ const WinnersByCategory = (props) => {
         <Tooltip
           cursor={{ strokeDasharray: "3 3" }}
           contentStyle={{
-            backgroundColor: { COLOR_TOOLTIP_BACKGROUND },
+            backgroundColor: COLOR_TOOLTIP_BACKGROUND,
             borderRadius: 10,
             paddingTop: 2,
             paddingBottom: 2,
@@ -148,6 +148,7 @@ const WinnersByCategory = (props) => {
           );
           return (
             <Scatter
+              key={index}
               shape="circle"
               legendType="circle"
               name={category}

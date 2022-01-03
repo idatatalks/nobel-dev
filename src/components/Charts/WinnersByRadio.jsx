@@ -64,7 +64,7 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
         </Pie>
         <Tooltip
           contentStyle={{
-            backgroundColor: { COLOR_TOOLTIP_BACKGROUND },
+            backgroundColor: COLOR_TOOLTIP_BACKGROUND,
             borderRadius: 10,
             paddingTop: 2,
             paddingBottom: 2,
@@ -81,17 +81,8 @@ const WinnersByRadio = ({ data, dataKey, beginYear, endYear }) => {
 };
 
 const renderCustomizedLabel = (props) => {
-  const {
-    x,
-    y,
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    percent,
-    index,
-  } = props;
+  const { x, y, cx, cy, midAngle, innerRadius, outerRadius, percent, index } =
+    props;
   console.log("Pie label:", props);
 
   return (

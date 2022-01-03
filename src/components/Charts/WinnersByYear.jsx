@@ -116,7 +116,7 @@ const WinnersByYear = ({ data }) => {
         <YAxis />
         <Tooltip
           contentStyle={{
-            backgroundColor: { COLOR_TOOLTIP_BACKGROUND },
+            backgroundColor: COLOR_TOOLTIP_BACKGROUND,
             borderRadius: 10,
             paddingTop: 2,
             paddingBottom: 2,
